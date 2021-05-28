@@ -1,0 +1,35 @@
+# Define docker-compose version
+version: '3.3'
+
+# Define services
+services:
+    mariadb:
+        build:
+            context: ./dockerfiles
+            dockerfile: Dockerfile-mariadb
+        volume:
+            - /volumes/wordpress_db:/var/lib/mysql
+		restart: always
+
+
+	wordpress:
+		build:
+			context: ./dockerfiles
+			dockerfile: Dockerfile-wordpress
+		volume:
+            - /volumes/wordpress_website:/var/www/html
+		depends_on:
+			- mariadb
+		restart: always
+
+    nginx:
+        build:
+            context: ./dockerfiles
+            dockerfile: Dockerfile-nginx
+		volume:
+            - /volumes/wordpress_website:/var/www/html
+		restart: always
+
+# Define network
+networks:
+    docker-network:
