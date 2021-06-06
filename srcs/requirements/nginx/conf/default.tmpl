@@ -1,6 +1,6 @@
 server {
-	listen 80;
-	listen [::]:80;
+	listen 8080;
+	listen [::]:8080;
 	server_name localhost;
 	return 301 https://$host$request_uri;
 }
@@ -22,12 +22,24 @@ server {
 
 	location / {
 		autoindex {{ var "AUTO_INDEX" | default "on"}};
-		try_files $uri $uri/ /index.php?$args;
+		try_files $uri $uri/ $uri/index.php;
 	}
+
+	# location /wordpress/ {
+	# 	include snippets/fastcgi-php.conf;
+	# 	fastcgi_pass php-upstream;
+	# 	fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    #     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+	# 	fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+    #     fastcgi_param PATH_INFO $fastcgi_path_info;
+	# }
 
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
-		fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+		fastcgi_pass php-upstream;
+		# fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+        # fastcgi_param PATH_INFO $fastcgi_path_info;
 	}
-
 }

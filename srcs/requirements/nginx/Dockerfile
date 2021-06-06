@@ -22,16 +22,24 @@ RUN set -ex; \
 	rm entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz; \
 	mv entrykit /bin/entrykit; \
 	chmod +x /bin/entrykit; \
-	entrykit --symlink;
+	entrykit --symlink; \
+# Create a self-signed SSL certificate
+	openssl req -newkey rsa:2048 \
+		-x509 -nodes -days 365 \
+		-keyout /etc/ssl/private/example.key \
+		-out /etc/ssl/certs/example.crt \
+		-subj '/C=JP/ST=Tokyo/L=Roppongi/O=42Tokyo/OU=Student/CN=localhost';
 
 # Copy config file for nginx server
-COPY config/default.tmpl /etc/nginx/sites-available/
+COPY conf/default.tmpl /etc/nginx/sites-available/
+COPY conf/default.conf /etc/nginx/conf.d/
 
-# Copy shell script
-COPY sh_scripts/init_nginx.sh /tmp/share/
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+
+EXPOSE 443
 
 # Change owner of all files in the html directory
 RUN chown -R www-data:www-data .
 
 # Keep running the container
-ENTRYPOINT [ "render", "/etc/nginx/sites-available/default", "--", "bash", "/tmp/share/init_nginx.sh"]
+ENTRYPOINT [ "render", "/etc/nginx/sites-available/default", "--", "nginx"]

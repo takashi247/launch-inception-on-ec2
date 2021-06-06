@@ -1,34 +1,51 @@
 # Define docker-compose version
-version: '3.3'
+version: '3.5'
 
 # Define services
 services:
     mariadb:
+        container_name: mariadb
         build:
-            context: ./dockerfiles
-            dockerfile: Dockerfile-mariadb
-        volume:
-            - /volumes/wordpress_db:/var/lib/mysql
-		restart: always
+            context: ./requirements/mariadb
+            # dockerfile: Dockerfile-mariadb
+        environment:
+            - MYSQL_DATABASE=mydb
+            - MYSQL_USER=wpuser
+            - MYSQL_PASSWORD=dbpassword
+            - MYSQL_ROOT_PASSWORD=dbpassword
+        networks:
+            - docker-network
+        # ports:
+        #     - "3306:3306"
+        # volumes:
+        #     - /home/user42/data:/var/lib/mysql
+        restart: always
 
-
-	wordpress:
-		build:
-			context: ./dockerfiles
-			dockerfile: Dockerfile-wordpress
-		volume:
-            - /volumes/wordpress_website:/var/www/html
-		depends_on:
-			- mariadb
-		restart: always
+    wordpress:
+        container_name: wordpress
+        build:
+            context: ./requirements/wordpress
+        networks:
+            - docker-network
+        depends_on:
+            - mariadb
+        restart: always
+        volumes:
+            - /home/user42/data/wordpress/:/var/www/html/wordpress
 
     nginx:
+        container_name: nginx
         build:
-            context: ./dockerfiles
-            dockerfile: Dockerfile-nginx
-		volume:
-            - /volumes/wordpress_website:/var/www/html
-		restart: always
+            context: ./requirements/nginx
+        ports:
+            - "443:443"
+        networks:
+            - docker-network
+        volumes:
+            - /home/user42/data/wordpress/:/var/www/html/wordpress
+        depends_on:
+            - wordpress
+        restart: always
 
 # Define network
 networks:

@@ -1,9 +1,6 @@
 # Get base image
 FROM debian:buster
 
-# Set Entrykit version
-ENV ENTRYKIT_VERSION 0.4.0
-
 # Get necessary applications
 RUN set -ex; \
 	apt-get update; \
@@ -27,26 +24,22 @@ RUN set -ex; \
 	tar -xvzf phpMyAdmin-5.0.2-all-languages.tar.gz; \
 	rm phpMyAdmin-5.0.2-all-languages.tar.gz; \
 	mv phpMyAdmin-5.0.2-all-languages phpmyadmin; \
-	rm phpmyadmin/config.sample.inc.php; \
-# Install Entrykit
-	wget https://github.com/progrium/entrykit/releases/download/v${ENTRYKIT_VERSION}/entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz; \
-	tar -xvzf entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz; \
-	rm entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz; \
-	mv entrykit /bin/entrykit; \
-	chmod +x /bin/entrykit; \
-	entrykit --symlink;
-
-# Modify wp-config file
-COPY config/wp-config.php wordpress/
+	rm phpmyadmin/config.sample.inc.php;
 
 # Modify config file for phpMyadmin
-COPY config/config.inc.php phpmyadmin/
+COPY conf/config.inc.php phpmyadmin/
 
-# Copy shell script
-COPY sh_scripts/init_wordpress.sh /tmp/share/
+# Copy php conf. file
+COPY conf/www.conf /etc/php/7.3/fpm/pool.d/
 
 # Change owner of all files in the html directory
 RUN chown -R www-data:www-data .
 
-# Keep running the container
-ENTRYPOINT [ "render", "/etc/nginx/sites-available/default", "--", "bash", "/tmp/share/init_wordpress.sh"]
+# expose port 9000 in docker-network
+EXPOSE 9000
+
+# make necessary directory for executing php-fpm7.3
+RUN mkdir -p /run/php
+
+# execute php-fpm in foreground
+CMD ["php-fpm7.3", "-F"]
