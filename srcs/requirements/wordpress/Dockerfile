@@ -19,7 +19,6 @@ RUN set -ex; \
 	wget https://wordpress.org/latest.tar.gz; \
 	tar -xvzf latest.tar.gz; \
 	rm latest.tar.gz; \
-# Install phpmyadmin
 	wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.tar.gz; \
 	tar -xvzf phpMyAdmin-5.0.2-all-languages.tar.gz; \
 	rm phpMyAdmin-5.0.2-all-languages.tar.gz; \
@@ -31,6 +30,9 @@ COPY conf/config.inc.php phpmyadmin/
 
 # Copy php conf. file
 COPY conf/www.conf /etc/php/7.3/fpm/pool.d/
+
+# Copy wp-config file
+COPY conf/wp-config.php wordpress/
 
 # Change owner of all files in the html directory
 RUN chown -R www-data:www-data .

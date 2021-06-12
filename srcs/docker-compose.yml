@@ -7,18 +7,16 @@ services:
         container_name: mariadb
         build:
             context: ./requirements/mariadb
-            # dockerfile: Dockerfile-mariadb
+            dockerfile: Dockerfile-mariadb
         environment:
-            - MYSQL_DATABASE=mydb
+            - MYSQL_DATABASE=wpdb
             - MYSQL_USER=wpuser
             - MYSQL_PASSWORD=dbpassword
             - MYSQL_ROOT_PASSWORD=dbpassword
         networks:
             - docker-network
-        # ports:
-        #     - "3306:3306"
-        # volumes:
-        #     - /home/user42/data:/var/lib/mysql
+        volumes:
+            - db:/var/lib/mysql
         restart: always
 
     wordpress:
@@ -31,7 +29,7 @@ services:
             - mariadb
         restart: always
         volumes:
-            - /home/user42/data/wordpress/:/var/www/html/wordpress
+            - wordpress:/var/www/html/wordpress
 
     nginx:
         container_name: nginx
@@ -42,7 +40,7 @@ services:
         networks:
             - docker-network
         volumes:
-            - /home/user42/data/wordpress/:/var/www/html/wordpress
+            - wordpress:/var/www/html/wordpress
         depends_on:
             - wordpress
         restart: always
@@ -50,3 +48,8 @@ services:
 # Define network
 networks:
     docker-network:
+
+# Define volumes
+volumes:
+    wordpress:
+    db:
