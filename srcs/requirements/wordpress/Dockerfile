@@ -14,12 +14,14 @@ RUN set -ex; \
 # Set working directory
 WORKDIR /var/www/html
 
-# Install wordpress and phpmyadmin
+# Install wordpress
 RUN set -ex; \
 	wget https://wordpress.org/latest.tar.gz; \
 	tar -xvzf latest.tar.gz; \
-	rm latest.tar.gz; \
-	wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.tar.gz; \
+	rm latest.tar.gz;
+
+# Install phpmyadmin
+RUN	wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.tar.gz; \
 	tar -xvzf phpMyAdmin-5.0.2-all-languages.tar.gz; \
 	rm phpMyAdmin-5.0.2-all-languages.tar.gz; \
 	mv phpMyAdmin-5.0.2-all-languages phpmyadmin; \
