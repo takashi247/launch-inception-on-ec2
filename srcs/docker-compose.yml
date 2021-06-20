@@ -5,6 +5,7 @@ version: '3.5'
 services:
     mariadb:
         container_name: mariadb
+        image: mariadb
         build:
             context: ./requirements/mariadb
         environment:
@@ -20,6 +21,7 @@ services:
 
     wordpress:
         container_name: wordpress
+        image: wordpress
         build:
             context: ./requirements/wordpress
         networks:
@@ -33,6 +35,7 @@ services:
 
     nginx:
         container_name: nginx
+        image: nginx
         build:
             context: ./requirements/nginx
         ports:

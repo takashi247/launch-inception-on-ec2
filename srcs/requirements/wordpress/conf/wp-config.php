@@ -29,7 +29,7 @@ define( 'DB_USER', 'wpuser' );
 define( 'DB_PASSWORD', 'dbpassword' );
 
 /** MySQL hostname */
-define( 'DB_HOST', 'mariadb:3306' );
+define( 'DB_HOST', 'mariadb' );
 
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
@@ -77,8 +77,8 @@ $table_prefix = 'wp_';
  *
  * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
-// define( 'WP_DEBUG', true );
-// define( 'WP_DEBUG_LOG', true);
+define( 'WP_DEBUG', true );
+define( 'WP_DEBUG_LOG', true);
 
 /* That's all, stop editing! Happy publishing. */
 

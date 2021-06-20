@@ -1,5 +1,9 @@
 #!/bin/bash
+
+# -e sets error exit option, -o pipefail sets returned values from pipeline as last non-zero values returned from them
 set -eo pipefail
+
+# If set, Bash allows filename patterns which match no files to expand to a null string, rather than themselves.
 shopt -s nullglob
 
 # logging functions
@@ -33,7 +37,7 @@ file_env() {
 	if [ "${!var:-}" ]; then
 		val="${!var}"
 	elif [ "${!fileVar:-}" ]; then
-		val="$(< "${!fileVar}")"
+		val="$(< "${!fileVar}")" # store contents in fileVar into val using command substitution
 	fi
 	export "$var"="$val"
 	unset "$fileVar"
@@ -43,7 +47,7 @@ file_env() {
 # and make them the same value (so user scripts can use either)
 _mariadb_file_env() {
 	local var="$1"; shift
-	local maria="MARIADB_${var#MYSQL_}"
+	local maria="MARIADB_${var#MYSQL_}" #replace MYSQL_ with MARIADB_ when expanded
 	file_env "$var" "$@"
 	file_env "$maria" "${!var}"
 	if [ "${!maria:-}" ]; then
@@ -244,26 +248,26 @@ docker_sql_escape_string_literal() {
 # Initializes database with timezone info and root password, plus optional extra db/user
 docker_setup_db() {
 	# Load timezone info into database
-	if [ -z "$MARIADB_INITDB_SKIP_TZINFO" ]; then
-		{
-			# Aria in 10.4+ is slow due to "transactional" (crash safety)
-			# https://jira.mariadb.org/browse/MDEV-23326
-			# https://github.com/docker-library/mariadb/issues/262
-			local tztables=( time_zone time_zone_leap_second time_zone_name time_zone_transition time_zone_transition_type )
-			for table in "${tztables[@]}"; do
-				echo "/*!100400 ALTER TABLE $table TRANSACTIONAL=0 */;"
-			done
+	# if [ -z "$MARIADB_INITDB_SKIP_TZINFO" ]; then
+	# 	{
+	# 		# Aria in 10.4+ is slow due to "transactional" (crash safety)
+	# 		# https://jira.mariadb.org/browse/MDEV-23326
+	# 		# https://github.com/docker-library/mariadb/issues/262
+	# 		local tztables=( time_zone time_zone_leap_second time_zone_name time_zone_transition time_zone_transition_type )
+	# 		for table in "${tztables[@]}"; do
+	# 			echo "/*!100400 ALTER TABLE $table TRANSACTIONAL=0 */;"
+	# 		done
 
-			# sed is for https://bugs.mysql.com/bug.php?id=20545
-			mysql_tzinfo_to_sql /usr/share/zoneinfo \
-				| sed 's/Local time zone must be set--see zic manual page/FCTY/'
+	# 		# sed is for https://bugs.mysql.com/bug.php?id=20545
+	# 		mysql_tzinfo_to_sql /usr/share/zoneinfo \
+	# 			| sed 's/Local time zone must be set--see zic manual page/FCTY/'
 
-			for table in "${tztables[@]}"; do
-				echo "/*!100400 ALTER TABLE $table TRANSACTIONAL=1 */;"
-			done
-		} | docker_process_sql --dont-use-mysql-root-password --database=mysql
-		# tell docker_process_sql to not use MYSQL_ROOT_PASSWORD since it is not set yet
-	fi
+	# 		for table in "${tztables[@]}"; do
+	# 			echo "/*!100400 ALTER TABLE $table TRANSACTIONAL=1 */;"
+	# 		done
+	# 	} | docker_process_sql --dont-use-mysql-root-password --database=mysql
+	# 	# tell docker_process_sql to not use MYSQL_ROOT_PASSWORD since it is not set yet
+	# fi
 	# Generate random root password
 	if [ -n "$MARIADB_RANDOM_ROOT_PASSWORD" ]; then
 		MARIADB_ROOT_PASSWORD="$(pwgen --numerals --capitalize --symbols --remove-chars="'\\" -1 32)"
@@ -395,4 +399,6 @@ _main() {
 # If we are sourced from elsewhere, don't perform any further actions
 if ! _is_sourced; then
 	_main "$@"
+else
+	echo "The script should be executed, not sourced from elsewhere"
 fi
