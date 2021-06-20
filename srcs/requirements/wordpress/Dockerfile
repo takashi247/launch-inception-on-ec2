@@ -36,6 +36,10 @@ COPY conf/www.conf /etc/php/7.3/fpm/pool.d/
 # Copy wp-config file
 COPY conf/wp-config.php wordpress/
 
+# Copy shell script for wp-cli
+COPY tools/init_wp.sh /usr/local/bin/
+RUN chmod 777 /usr/local/bin/init_wp.sh
+
 # Change owner of all files in the html directory
 RUN chown -R www-data:www-data .
 
