@@ -32,6 +32,8 @@ services:
         volumes:
             - wordpress:/var/www/html/wordpress
             - phpmyadmin:/var/www/html/phpmyadmin
+            - wordpress:/var/www/tnishina.42.fr/wordpress
+            - phpmyadmin:/var/www/tnishina.42.fr/phpmyadmin
 
     nginx:
         container_name: nginx
@@ -45,6 +47,8 @@ services:
         volumes:
             - wordpress:/var/www/html/wordpress
             - phpmyadmin:/var/www/html/phpmyadmin
+            - wordpress:/var/www/tnishina.42.fr/wordpress
+            - phpmyadmin:/var/www/tnishina.42.fr/phpmyadmin
         depends_on:
             - wordpress
         restart: always
