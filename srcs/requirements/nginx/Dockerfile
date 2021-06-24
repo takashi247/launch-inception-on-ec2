@@ -37,8 +37,6 @@ COPY conf/tnishina-42-fr.conf /etc/nginx/sites-available
 
 # Create simlink in sites-enable and html directory and add DNS setting
 RUN ln -s /etc/nginx/sites-available/tnishina-42-fr.conf /etc/nginx/sites-enabled/tnishina-42-fr.conf
-	# mkdir -p /var/www/tnishina.42.fr && \
-	# cp -rf /var/www/html/* /var/www/tnishina.42.fr
 
 # set daemon off to run nginx in foreground
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
