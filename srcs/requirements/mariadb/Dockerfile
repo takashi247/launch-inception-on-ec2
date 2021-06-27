@@ -29,5 +29,3 @@ RUN chmod 777 /usr/local/bin/init.sh
 EXPOSE 3306
 
 ENTRYPOINT ["init.sh"]
-
-# CMD ["tail", "-f", "/dev/null"]

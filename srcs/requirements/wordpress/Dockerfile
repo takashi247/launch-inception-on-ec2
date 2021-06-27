@@ -7,18 +7,14 @@ RUN set -ex; \
 	apt-get -y install wget curl vim \
 		php-cgi php-common php-fpm php-pear php-mbstring php-zip \
 		php-net-socket php-gd php-xml-util php-gettext php-mysql \
-		php-bcmath; \
+		php-bcmath \
+	# to use mysqladmin command in init_wp.sh
+		mariadb-client; \
 	# Remove apt-get caches
 	rm -rf /var/lib/apt/lists;
 
 # Set working directory
 WORKDIR /var/www/html
-
-# Install wordpress
-RUN set -ex; \
-	wget https://wordpress.org/latest.tar.gz; \
-	tar -xvzf latest.tar.gz; \
-	rm latest.tar.gz;
 
 # Install phpmyadmin
 RUN	wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.tar.gz; \
@@ -34,7 +30,7 @@ COPY conf/config.inc.php phpmyadmin/
 COPY conf/www.conf /etc/php/7.3/fpm/pool.d/
 
 # Copy wp-config file
-COPY conf/wp-config.php wordpress/
+COPY conf/wp-config.php /tmp/
 
 # Copy shell script for wp-cli
 COPY tools/init_wp.sh /usr/local/bin/

@@ -60,5 +60,13 @@ networks:
 # Define volumes
 volumes:
     wordpress:
+        # driver_opts:
+        #     type: none
+        #     device: /home/tnishina/data/wordpress
+        #     o: bind
     db:
+        # driver_opts:
+        #     type: none
+        #     device: /home/tnishina/data/db
+        #     o: bind
     phpmyadmin:
