@@ -37,5 +37,3 @@ if [ ! "$(ls -A /var/www/tnishina.42.fr/wordpress)" ]; then
         --user_pass=editor \
         --allow-root
 fi
-
-# php-fpm7.3 -F

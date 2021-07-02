@@ -9,10 +9,10 @@ services:
         build:
             context: ./requirements/mariadb
         environment:
-            - MYSQL_DATABASE=wpdb
-            - MYSQL_USER=wpuser
-            - MYSQL_PASSWORD=dbpassword
-            - MYSQL_ROOT_PASSWORD=dbpassword
+            - MYSQL_DATABASE=$MYSQL_DATABASE
+            - MYSQL_USER=$MYSQL_USER
+            - MYSQL_PASSWORD=$MYSQL_PASSWORD
+            - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
         networks:
             - docker-network
         volumes:
@@ -24,16 +24,21 @@ services:
         image: wordpress
         build:
             context: ./requirements/wordpress
+        environment:
+            - MYSQL_DATABASE=$MYSQL_DATABASE
+            - MYSQL_USER=$MYSQL_USER
+            - MYSQL_PASSWORD=$MYSQL_PASSWORD
+            - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
         networks:
             - docker-network
         depends_on:
             - mariadb
         restart: always
         volumes:
-            - wordpress:/var/www/html/wordpress
-            - phpmyadmin:/var/www/html/phpmyadmin
-            - wordpress:/var/www/tnishina.42.fr/wordpress
-            - phpmyadmin:/var/www/tnishina.42.fr/phpmyadmin
+            - wordpress_files:/var/www/html/wordpress
+            - phpmyadmin_files:/var/www/html/phpmyadmin
+            - wordpress_files:/var/www/$DOMAIN_NAME/wordpress
+            - phpmyadmin_files:/var/www/$DOMAIN_NAME/phpmyadmin
 
     nginx:
         container_name: nginx
@@ -45,10 +50,10 @@ services:
         networks:
             - docker-network
         volumes:
-            - wordpress:/var/www/html/wordpress
-            - phpmyadmin:/var/www/html/phpmyadmin
-            - wordpress:/var/www/tnishina.42.fr/wordpress
-            - phpmyadmin:/var/www/tnishina.42.fr/phpmyadmin
+            - wordpress_files:/var/www/html/wordpress
+            - phpmyadmin_files:/var/www/html/phpmyadmin
+            - wordpress_files:/var/www/$DOMAIN_NAME/wordpress
+            - phpmyadmin_files:/var/www/$DOMAIN_NAME/phpmyadmin
         depends_on:
             - wordpress
         restart: always
@@ -59,14 +64,17 @@ networks:
 
 # Define volumes
 volumes:
-    wordpress:
-        # driver_opts:
-        #     type: none
-        #     device: /home/tnishina/data/wordpress
-        #     o: bind
+    wordpress_files:
+        name: wordpress_files
+        driver_opts:
+            type: none
+            device: /home/tnishina/data/wordpress_files
+            o: bind
     db:
-        # driver_opts:
-        #     type: none
-        #     device: /home/tnishina/data/db
-        #     o: bind
-    phpmyadmin:
+        name: db
+        driver_opts:
+            type: none
+            device: /home/tnishina/data/db
+            o: bind
+    phpmyadmin_files:
+        name: phpmyadmin_files
