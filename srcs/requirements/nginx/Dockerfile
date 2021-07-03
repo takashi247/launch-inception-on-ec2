@@ -4,6 +4,9 @@ FROM debian:buster
 # Set Entrykit version
 ENV ENTRYKIT_VERSION 0.4.0
 
+# Set domain name
+ARG DOMAIN_NAME
+
 # Get necessary applications
 RUN set -ex; \
 	apt-get update; \
@@ -28,7 +31,7 @@ RUN set -ex; \
 		-x509 -nodes -days 365 \
 		-keyout /etc/ssl/private/example.key \
 		-out /etc/ssl/certs/example.crt \
-		-subj '/C=JP/ST=Tokyo/L=Roppongi/O=42Tokyo/OU=Student/CN=localhost';
+		-subj "/C=JP/ST=Tokyo/L=Roppongi/O=42Tokyo/OU=Student/CN=${DOMAIN_NAME}" ;
 
 # Copy config file for nginx server
 COPY conf/default.tmpl /etc/nginx/sites-available/
