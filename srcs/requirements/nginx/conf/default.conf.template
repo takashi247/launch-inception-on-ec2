@@ -1,0 +1,3 @@
+upstream php-upstream {
+    server ${CONT_NAME_WORDPRESS}:${PORT_NUM_WORDPRESS};
+}

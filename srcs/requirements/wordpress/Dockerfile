@@ -1,6 +1,9 @@
 # Get base image
 FROM debian:buster
 
+# Set necessary env variables
+ARG CONT_NAME_WORDPRESS PORT_NUM_WORDPRESS
+
 # Get necessary applications
 RUN set -ex; \
 	apt-get update; \
@@ -18,18 +21,15 @@ RUN set -ex; \
 # Set working directory
 WORKDIR /var/www/html
 
-# Install phpmyadmin
-RUN	wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.tar.gz; \
-	tar -xvzf phpMyAdmin-5.0.2-all-languages.tar.gz; \
-	rm phpMyAdmin-5.0.2-all-languages.tar.gz; \
-	mv phpMyAdmin-5.0.2-all-languages phpmyadmin; \
-	rm phpmyadmin/config.sample.inc.php;
-
 # Modify config file for phpMyadmin
-COPY conf/config.inc.php phpmyadmin/
+# COPY conf/config.inc.php phpmyadmin/
 
-# Copy php conf. file
-COPY conf/www.conf /etc/php/7.3/fpm/pool.d/
+# Copy php .conf file
+COPY conf/www.conf.template /tmp
+
+# Convert environment variables in template file
+RUN envsubst '$$CONT_NAME_WORDPRESS$$PORT_NUM_WORDPRESS' \
+	< /tmp/www.conf.template > /etc/php/7.3/fpm/pool.d/www.conf
 
 # Copy wp-config file
 COPY conf/wp-config.php /tmp/
@@ -42,7 +42,7 @@ RUN chmod 777 /usr/local/bin/init_wp.sh
 RUN chown -R www-data:www-data .
 
 # expose port 9000 in docker-network
-EXPOSE 9000
+EXPOSE ${PORT_NUM_WORDPRESS}
 
 # make necessary directory for executing php-fpm7.3
 RUN mkdir -p /run/php

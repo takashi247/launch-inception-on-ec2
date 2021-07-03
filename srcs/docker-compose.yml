@@ -4,62 +4,67 @@ version: '3.5'
 # Define services
 services:
     mariadb:
-        container_name: mariadb
+        container_name: ${CONT_NAME_MARIADB}
         build:
             context: ./requirements/mariadb
         environment:
-            - MYSQL_DATABASE=$MYSQL_DATABASE
-            - MYSQL_USER=$MYSQL_USER
-            - MYSQL_PASSWORD=$MYSQL_PASSWORD
-            - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
         networks:
             - docker-network
         volumes:
-            - db:/var/lib/mysql
+            - ${VOLUME_NAME_DB}:/var/lib/mysql
         restart: always
 
     wordpress:
-        container_name: wordpress_rev
+        container_name: ${CONT_NAME_WORDPRESS}
         build:
             context: ./requirements/wordpress
+            args:
+                CONT_NAME_WORDPRESS: ${CONT_NAME_WORDPRESS}
+                PORT_NUM_WORDPRESS: ${PORT_NUM_WORDPRESS}
         environment:
-            - MYSQL_DATABASE=$MYSQL_DATABASE
-            - MYSQL_USER=$MYSQL_USER
-            - MYSQL_PASSWORD=$MYSQL_PASSWORD
-            - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
-            - DOMAIN_NAME=$DOMAIN_NAME
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - DOMAIN_NAME=${DOMAIN_NAME}
             - TITLE=${TITLE}
-            - ADMIN_USER=$ADMIN_USER
-            - ADMIN_PASSWORD=$ADMIN_PASSWORD
-            - ADMIN_EMAIL=$ADMIN_EMAIL
-            - USER_LOGIN=$USER_LOGIN
-            - USER_EMAIL=$USER_EMAIL
-            - ROLE=$ROLE
-            - USER_PASSWORD=$USER_PASSWORD
+            - ADMIN_USER=${ADMIN_USER}
+            - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+            - ADMIN_EMAIL=${ADMIN_EMAIL}
+            - USER_LOGIN=${USER_LOGIN}
+            - USER_EMAIL=${USER_EMAIL}
+            - ROLE=${ROLE}
+            - USER_PASSWORD=${USER_PASSWORD}
+            - CONT_NAME_MARIADB=${CONT_NAME_MARIADB}
         networks:
             - docker-network
         depends_on:
             - mariadb
         restart: always
         volumes:
-            - wordpress_files:/var/www/$DOMAIN_NAME/wordpress
-            - phpmyadmin_files:/var/www/$DOMAIN_NAME/phpmyadmin
+            - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}/wordpress
 
     nginx:
-        container_name: nginx
+        container_name: ${CONT_NAME_NGINX}
         build:
             context: ./requirements/nginx
             args:
                 DOMAIN_NAME: ${DOMAIN_NAME}
                 CERT_PATH: ${CERT_PATH}
                 CERT_KEY: ${CERT_KEY}
+                PORT_NUM_NGINX: ${PORT_NUM_NGINX}
+                CONT_NAME_WORDPRESS: ${CONT_NAME_WORDPRESS}
+                PORT_NUM_WORDPRESS: ${PORT_NUM_WORDPRESS}
         ports:
             - "443:443"
         networks:
             - docker-network
         volumes:
-            - wordpress_files:/var/www/$DOMAIN_NAME/wordpress
-            - phpmyadmin_files:/var/www/$DOMAIN_NAME/phpmyadmin
+            - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}/wordpress
         depends_on:
             - wordpress
         restart: always
@@ -71,16 +76,14 @@ networks:
 # Define volumes
 volumes:
     wordpress_files:
-        name: wordpress_files
+        name: ${VOLUME_NAME_WP}
         driver_opts:
             type: none
-            device: /home/tnishina/data/wordpress_files
+            device: ${HOST_PATH_WP}
             o: bind
     db:
-        name: db
+        name: ${VOLUME_NAME_DB}
         driver_opts:
             type: none
-            device: /home/tnishina/data/db
+            device: ${HOST_PATH_DB}
             o: bind
-    phpmyadmin_files:
-        name: phpmyadmin_files

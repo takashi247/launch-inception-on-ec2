@@ -10,6 +10,7 @@ if [ ! "$(ls -A /var/www/${DOMAIN_NAME}/wordpress)" ]; then
 	tar -xvzf latest.tar.gz
 	rm latest.tar.gz
     mv wordpress/* /var/www/${DOMAIN_NAME}/wordpress
+    rmdir wordpress
     chown -R www-data:www-data /var/www/${DOMAIN_NAME}/wordpress/
     # install wp-cli
     wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar

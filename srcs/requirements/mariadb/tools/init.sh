@@ -34,7 +34,11 @@ if [ ! -d /var/lib/mysql/mysql ]; then
     GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION; \
     CREATE DATABASE IF NOT EXISTS wpdb; \
     CREATE USER 'wpuser'@'%' IDENTIFIED BY 'dbpassword'; \
+    SET PASSWORD FOR 'wpuser'@'%' = PASSWORD('dbpassword'); \
     GRANT ALL PRIVILEGES ON wpdb.* TO 'wpuser'@'%'; \
+    CREATE USER 'wpuser'@'localhost' IDENTIFIED BY 'dbpassword'; \
+    SET PASSWORD FOR 'wpuser'@'localhost' = PASSWORD('dbpassword'); \
+    GRANT ALL PRIVILEGES ON wpdb.* TO 'wpuser'@'localhost'; \
     FLUSH PRIVILEGES;"
 
     /usr/bin/mysqladmin --password=dbpassword shutdown
