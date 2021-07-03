@@ -5,7 +5,6 @@ version: '3.5'
 services:
     mariadb:
         container_name: mariadb
-        image: mariadb
         build:
             context: ./requirements/mariadb
         environment:
@@ -20,8 +19,7 @@ services:
         restart: always
 
     wordpress:
-        container_name: wordpress
-        image: wordpress
+        container_name: wordpress_rev
         build:
             context: ./requirements/wordpress
         environment:
@@ -29,31 +27,37 @@ services:
             - MYSQL_USER=$MYSQL_USER
             - MYSQL_PASSWORD=$MYSQL_PASSWORD
             - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+            - DOMAIN_NAME=$DOMAIN_NAME
+            - TITLE=${TITLE}
+            - ADMIN_USER=$ADMIN_USER
+            - ADMIN_PASSWORD=$ADMIN_PASSWORD
+            - ADMIN_EMAIL=$ADMIN_EMAIL
+            - USER_LOGIN=$USER_LOGIN
+            - USER_EMAIL=$USER_EMAIL
+            - ROLE=$ROLE
+            - USER_PASSWORD=$USER_PASSWORD
         networks:
             - docker-network
         depends_on:
             - mariadb
         restart: always
         volumes:
-            - wordpress_files:/var/www/html/wordpress
-            - phpmyadmin_files:/var/www/html/phpmyadmin
             - wordpress_files:/var/www/$DOMAIN_NAME/wordpress
             - phpmyadmin_files:/var/www/$DOMAIN_NAME/phpmyadmin
 
     nginx:
         container_name: nginx
-        image: nginx
         build:
             context: ./requirements/nginx
             args:
-                DOMAIN_NAME: $DOMAIN_NAME
+                DOMAIN_NAME: ${DOMAIN_NAME}
+                CERT_PATH: ${CERT_PATH}
+                CERT_KEY: ${CERT_KEY}
         ports:
             - "443:443"
         networks:
             - docker-network
         volumes:
-            - wordpress_files:/var/www/html/wordpress
-            - phpmyadmin_files:/var/www/html/phpmyadmin
             - wordpress_files:/var/www/$DOMAIN_NAME/wordpress
             - phpmyadmin_files:/var/www/$DOMAIN_NAME/phpmyadmin
         depends_on:

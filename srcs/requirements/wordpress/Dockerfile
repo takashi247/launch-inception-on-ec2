@@ -8,6 +8,8 @@ RUN set -ex; \
 		php-cgi php-common php-fpm php-pear php-mbstring php-zip \
 		php-net-socket php-gd php-xml-util php-gettext php-mysql \
 		php-bcmath \
+	# to use envsubst
+		gettext-base \
 	# to use mysqladmin command in init_wp.sh
 		mariadb-client; \
 	# Remove apt-get caches
