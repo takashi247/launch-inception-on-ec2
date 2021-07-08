@@ -1,11 +1,15 @@
 FROM debian:buster
 
+ARG MYSQL_ROOT_PASSWORD MYSQL_USER MYSQL_DATABASE MYSQL_PASSWORD
+
 # install vim and mariadb-server
 RUN set -ex; \
 	apt-get update \
     && apt-get install -y --no-install-recommends \
 		vim \
 		mariadb-server \
+	# to use envsubst
+		gettext-base \
     && rm -rf /var/lib/apt/lists/* \
 # purge and re-create /var/lib/mysql with appropriate ownership
 	rm -rf /var/lib/mysql; \
@@ -23,7 +27,13 @@ RUN set -ex; \
 		| xargs -0 grep -lZE '^(bind-address\s)' \
 		| xargs -rt -0 sed -Ei 's/^(bind-address\s)/#&/';
 
-COPY tools/init.sh /usr/local/bin/
+# Copy shell script template in tmp directory
+COPY tools/init.template /tmp/
+
+# Convert environment variables in template file
+RUN envsubst '$$MYSQL_ROOT_PASSWORD$$MYSQL_USER$$MYSQL_DATABASE$$MYSQL_PASSWORD' \
+	< /tmp/init.template > /usr/local/bin/init.sh
+
 RUN chmod 777 /usr/local/bin/init.sh
 
 EXPOSE 3306

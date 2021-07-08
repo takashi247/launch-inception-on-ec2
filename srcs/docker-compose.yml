@@ -7,11 +7,11 @@ services:
         container_name: ${CONT_NAME_MARIADB}
         build:
             context: ./requirements/mariadb
-        environment:
-            - MYSQL_DATABASE=${MYSQL_DATABASE}
-            - MYSQL_USER=${MYSQL_USER}
-            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            args:
+                MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+                MYSQL_DATABASE: ${MYSQL_DATABASE}
+                MYSQL_USER: ${MYSQL_USER}
+                MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         networks:
             - docker-network
         volumes:
