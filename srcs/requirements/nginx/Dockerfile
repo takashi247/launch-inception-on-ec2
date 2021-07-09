@@ -13,8 +13,11 @@ ARG PORT_NUM_WORDPRESS
 RUN set -ex; \
 	apt-get update; \
 	apt-get -y install \
+	# to create SSL certificate
 		openssl \
+	# to use envsubst
 		gettext-base \
+	# to run nginx
 		nginx; \
 	# Remove apt-get caches
 	rm -rf /var/lib/apt/lists;

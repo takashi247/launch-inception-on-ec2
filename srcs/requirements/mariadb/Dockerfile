@@ -14,6 +14,7 @@ RUN set -ex; \
 		mariadb-server \
 	# to use envsubst
 		gettext-base \
+	# remove apt-get caches
     && rm -rf /var/lib/apt/lists/* \
 # delete and re-create /var/lib/mysql with appropriate ownership
 	rm -rf /var/lib/mysql; \
@@ -25,7 +26,7 @@ RUN set -ex; \
 	chown -R mysql:mysql /var/run/mysqld; \
 	chmod 777 /var/run/mysqld;
 
-# comment out a few problematic configuration values
+# comment out bind-address configurations in .cnf files
 RUN set -ex; \
 	find /etc/mysql/ -name '*.cnf' -print0 \
 		| xargs -0 grep -lZE '^(bind-address\s)' \

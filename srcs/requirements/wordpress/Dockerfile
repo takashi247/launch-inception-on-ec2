@@ -11,17 +11,29 @@ RUN set -ex; \
 	apt-get -y install \
 	# to install wordpress and wordpress cli
 		wget \
+	# to install cgi interpreter for php
 		php-cgi \
+	# to install common utilities shared among all packaged PHP versions
 		php-common \
+	# to install fastCGI for php
 		php-fpm \
+	# to install PEAR (PHP Extension and Application Repository) based packages
 		php-pear \
+	# to handle multibyte encodings in PHP
 		php-mbstring \
+	# to install php zip module
 		php-zip \
+	# to enable socket communication
 		php-net-socket \
+	# to handle image processing
 		php-gd \
+	# a XML utility for php-pear
 		php-xml-util \
+	# to use gettext functions
 		php-gettext \
+	# to use MySQL module for php
 		php-mysql \
+	# to handle numbers
 		php-bcmath \
 	# use gosu for wordpress cli
 		gosu \
