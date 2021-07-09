@@ -8,9 +8,20 @@ ARG PORT_NUM_WORDPRESS
 # Get necessary applications
 RUN set -ex; \
 	apt-get update; \
-	apt-get -y install wget curl vim \
-		php-cgi php-common php-fpm php-pear php-mbstring php-zip \
-		php-net-socket php-gd php-xml-util php-gettext php-mysql \
+	apt-get -y install \
+	# to install wordpress and wordpress cli
+		wget \
+		php-cgi \
+		php-common \
+		php-fpm \
+		php-pear \
+		php-mbstring \
+		php-zip \
+		php-net-socket \
+		php-gd \
+		php-xml-util \
+		php-gettext \
+		php-mysql \
 		php-bcmath \
 	# use gosu for wordpress cli
 		gosu \

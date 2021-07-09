@@ -6,16 +6,16 @@ ARG MYSQL_USER
 ARG MYSQL_DATABASE
 ARG MYSQL_PASSWORD
 
-# install vim and mariadb-server
+# install necessary packages
 RUN set -ex; \
 	apt-get update \
     && apt-get install -y --no-install-recommends \
-		vim \
+	# to use server-side applications of mariadb
 		mariadb-server \
 	# to use envsubst
 		gettext-base \
     && rm -rf /var/lib/apt/lists/* \
-# purge and re-create /var/lib/mysql with appropriate ownership
+# delete and re-create /var/lib/mysql with appropriate ownership
 	rm -rf /var/lib/mysql; \
 	mkdir -p /var/lib/mysql; \
 	chown -R mysql:mysql /var/lib/mysql; \

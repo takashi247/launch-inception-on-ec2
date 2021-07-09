@@ -12,7 +12,8 @@ ARG PORT_NUM_WORDPRESS
 # Get necessary applications
 RUN set -ex; \
 	apt-get update; \
-	apt-get -y install wget curl vim openssl \
+	apt-get -y install \
+		openssl \
 		gettext-base \
 		nginx; \
 	# Remove apt-get caches
