@@ -9,12 +9,12 @@ all:
 		docker-compose exec wordpress init_wp.sh
 
 clean:
+	cd srcs && docker-compose down -v;
+
+fclean: clean
 	set -a; \
 	. ./srcs/.env; \
 	set +a; \
 	sudo sed -i "/$${DOMAIN_NAME}/d" /etc/hosts; \
-	cd srcs && docker-compose down -v; \
-	sudo rm -rf $${HOST_PATH}
-
-fclean: clean
+	sudo rm -rf $${HOST_PATH};
 	docker image prune -a -f
