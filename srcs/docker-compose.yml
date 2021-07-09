@@ -4,6 +4,7 @@ version: '3.5'
 # Define services
 services:
     mariadb:
+        image: ${IMG_NAME_MARIADB}
         container_name: ${CONT_NAME_MARIADB}
         build:
             context: ./requirements/mariadb
@@ -19,6 +20,7 @@ services:
         restart: always
 
     wordpress:
+        image: ${IMG_NAME_WORDPRESS}
         container_name: ${CONT_NAME_WORDPRESS}
         build:
             context: ./requirements/wordpress
@@ -49,6 +51,7 @@ services:
             - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}
 
     nginx:
+        image: ${IMG_NAME_NGINX}
         container_name: ${CONT_NAME_NGINX}
         build:
             context: ./requirements/nginx
