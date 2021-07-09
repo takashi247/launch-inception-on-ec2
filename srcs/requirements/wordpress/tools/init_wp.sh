@@ -21,7 +21,7 @@ if [ ! "$(ls -A /var/www/${DOMAIN_NAME})" ]; then
     while ! mysqladmin ping -h mariadb --silent; do
         sleep 1
     done
-    # install wordpress
+    # install wordpress as www-data using gosu
     gosu www-data \
         /usr/local/bin/wp core install \
         --url=${DOMAIN_NAME} \
@@ -29,7 +29,7 @@ if [ ! "$(ls -A /var/www/${DOMAIN_NAME})" ]; then
         --admin_user=${ADMIN_USER} \
         --admin_password=${ADMIN_PASSWORD} \
         --admin_email=${ADMIN_EMAIL}
-    # create users
+    # create users as www-data using gosu
     gosu www-data \
         /usr/local/bin/wp user create \
         ${USER_LOGIN} \

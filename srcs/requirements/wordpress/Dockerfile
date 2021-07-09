@@ -21,12 +21,6 @@ RUN set -ex; \
 	# Remove apt-get caches
 	rm -rf /var/lib/apt/lists;
 
-# Set working directory
-WORKDIR /var/www/html
-
-# Modify config file for phpMyadmin
-# COPY conf/config.inc.php phpmyadmin/
-
 # Copy php .conf file
 COPY conf/www.conf.template /tmp
 
@@ -40,9 +34,6 @@ COPY conf/wp-config.php /tmp/
 # Copy shell script for wp-cli
 COPY tools/init_wp.sh /usr/local/bin/
 RUN chmod 777 /usr/local/bin/init_wp.sh
-
-# Change owner of all files in the html directory
-RUN chown -R www-data:www-data .
 
 # expose port 9000 in docker-network
 EXPOSE ${PORT_NUM_WORDPRESS}
