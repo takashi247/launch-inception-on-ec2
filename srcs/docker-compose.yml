@@ -46,7 +46,7 @@ services:
             - mariadb
         restart: always
         volumes:
-            - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}/wordpress
+            - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}
 
     nginx:
         container_name: ${CONT_NAME_NGINX}
@@ -64,7 +64,7 @@ services:
         networks:
             - docker-network
         volumes:
-            - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}/wordpress
+            - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}
         depends_on:
             - wordpress
         restart: always

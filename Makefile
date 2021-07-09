@@ -9,7 +9,6 @@ all:
 	sudo mkdir -p /home/tnishina/data/wordpress_files /home/tnishina/data/db
 	cd srcs && docker-compose up --build -d && \
 		docker-compose exec wordpress init_wp.sh
-	cd srcs && docker-compose exec nginx cp /var/www/html/index.nginx-debian.html /var/www/tnishina.42.fr/
 
 clean:
 	sudo sed -i '/tnishina.42.fr/d' /etc/hosts
