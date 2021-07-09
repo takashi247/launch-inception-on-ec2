@@ -1,6 +1,10 @@
 FROM debian:buster
 
-ARG MYSQL_ROOT_PASSWORD MYSQL_USER MYSQL_DATABASE MYSQL_PASSWORD
+# Set necessary env variables
+ARG MYSQL_ROOT_PASSWORD
+ARG MYSQL_USER
+ARG MYSQL_DATABASE
+ARG MYSQL_PASSWORD
 
 # install vim and mariadb-server
 RUN set -ex; \

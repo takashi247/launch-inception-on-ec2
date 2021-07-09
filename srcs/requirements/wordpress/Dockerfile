@@ -2,7 +2,8 @@
 FROM debian:buster
 
 # Set necessary env variables
-ARG CONT_NAME_WORDPRESS PORT_NUM_WORDPRESS
+ARG CONT_NAME_WORDPRESS
+ARG PORT_NUM_WORDPRESS
 
 # Get necessary applications
 RUN set -ex; \
