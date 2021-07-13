@@ -8,6 +8,7 @@ ARG CERT_KEY
 ARG PORT_NUM_NGINX
 ARG CONT_NAME_WORDPRESS
 ARG PORT_NUM_WORDPRESS
+ARG PORT_NUM_ADMINER
 
 # Get necessary applications
 RUN set -ex; \
@@ -34,7 +35,7 @@ COPY conf/default.conf.template /etc/nginx/conf.d/
 COPY conf/mysite.template /etc/nginx/sites-available
 
 # Convert environment variables in template file
-RUN envsubst '$$DOMAIN_NAME$$CERT_PATH$$CERT_KEY' \
+RUN envsubst '$$DOMAIN_NAME$$CERT_PATH$$CERT_KEY$$PORT_NUM_ADMINER' \
 	< /etc/nginx/sites-available/mysite.template > /etc/nginx/sites-available/mysite.conf && \
 	envsubst '$$CONT_NAME_WORDPRESS$$PORT_NUM_WORDPRESS' \
 	< /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf;
@@ -45,7 +46,9 @@ RUN ln -s /etc/nginx/sites-available/mysite.conf /etc/nginx/sites-enabled/mysite
 # set daemon off to run nginx in foreground
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
+# set necessary ports exposed
 EXPOSE ${PORT_NUM_NGINX}
+EXPOSE ${PORT_NUM_ADMINER}
 
 # Change owner of all files in the www directory
 RUN chown -R www-data:www-data /var/www

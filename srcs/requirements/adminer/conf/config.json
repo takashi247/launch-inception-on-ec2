@@ -1,0 +1,29 @@
+{
+    "listeners": {
+      "*:8080": {
+        "pass": "routes"
+      }
+    },
+    "routes": [
+      {
+        "match": {
+          "uri": ["/adminer.css"]
+        },
+        "action": {
+          "share": "/var/www/html/"
+        }
+      },
+      {
+        "action": {
+          "pass": "applications/adminer"
+        }
+      }
+    ],
+    "applications": {
+      "adminer": {
+        "type": "php",
+        "root": "/var/www/html/",
+        "index": "adminer.php"
+      }
+    }
+  }

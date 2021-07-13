@@ -18,6 +18,10 @@ server {
 		try_files $uri $uri/ $uri/index.php;
 	}
 
+	location /adminer/ {
+		proxy_pass http://adminer:${PORT_NUM_ADMINER}/;
+	}
+
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
 		fastcgi_pass php-upstream;
