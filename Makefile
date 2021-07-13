@@ -10,11 +10,11 @@ all:
 
 clean:
 	cd srcs && docker-compose down -v;
-
-fclean: clean
 	set -a; \
 	. ./srcs/.env; \
 	set +a; \
-	sudo sed -i "/$${DOMAIN_NAME}/d" /etc/hosts; \
+	sudo sed -i "/$${DOMAIN_NAME}/d" /etc/hosts;
+
+fclean: clean
 	sudo rm -rf $${HOST_PATH};
 	docker image prune -a -f
