@@ -46,7 +46,14 @@ RUN envsubst '$$PORT_NUM_ADMINER' \
 
 # configure nginx Unit through REST API
 RUN unitd \
-    && curl -X PUT -d @/tmp/config.json --unix-socket /run/control.unit.sock http://localhost/config \
+    && curl \
+    # send PUT request
+        -X PUT \
+    # passing data from JSON file
+        -d @/tmp/config.json \
+    # specify unix socket and url path
+        --unix-socket /run/control.unit.sock http://localhost/config \
+    # change permission for css file
     && chmod +r /var/www/html/adminer.css
 
 # expose port
