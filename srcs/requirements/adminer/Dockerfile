@@ -25,7 +25,9 @@ RUN set -ex; \
         unit \
         unit-php \
         php \
-        php-mysql; \
+        php-mysql \
+    # to use envsubst
+        gettext-base; \
     # delete apt-get caches
     rm -rf /var/lib/apt/lists;
 
@@ -34,9 +36,13 @@ RUN mkdir -p /var/www/html \
     && curl -L https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1.php \
     > /var/www/html/adminer.php
 
-# copy config file for Nginx Unit and css file for adminer
-COPY ./conf/config.json /tmp/config.json
+# copy config template for Nginx Unit and css file for adminer
+COPY ./conf/config.json.template /tmp/config.json.template
 COPY ./conf/adminer.css /var/www/html/adminer.css
+
+# replace environment variables in template
+RUN envsubst '$$PORT_NUM_ADMINER' \
+    < /tmp/config.json.template > /tmp/config.json
 
 # configure nginx Unit through REST API
 RUN unitd \

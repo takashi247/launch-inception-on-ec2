@@ -1,6 +1,6 @@
 {
     "listeners": {
-      "*:8080": {
+      "*:${PORT_NUM_ADMINER}": {
         "pass": "routes"
       }
     },
