@@ -27,6 +27,7 @@ services:
             args:
                 CONT_NAME_WORDPRESS: ${CONT_NAME_WORDPRESS}
                 PORT_NUM_WORDPRESS: ${PORT_NUM_WORDPRESS}
+                PORT_NUM_REDIS: ${PORT_NUM_REDIS}
         environment:
             - MYSQL_DATABASE=${MYSQL_DATABASE}
             - MYSQL_USER=${MYSQL_USER}
@@ -42,10 +43,13 @@ services:
             - ROLE=${ROLE}
             - USER_PASSWORD=${USER_PASSWORD}
             - CONT_NAME_MARIADB=${CONT_NAME_MARIADB}
+            - CONT_NAME_REDIS=${CONT_NAME_REDIS}
+            - PORT_NUM_REDIS=${PORT_NUM_REDIS}
         networks:
             - docker-network
         depends_on:
             - mariadb
+            - redis
         restart: always
         volumes:
             - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}
@@ -86,6 +90,22 @@ services:
         depends_on:
             - mariadb
 
+    redis:
+        image: ${IMG_NAME_REDIS}
+        container_name: ${CONT_NAME_REDIS}
+        build:
+            context: ./requirements/redis
+            args:
+                PORT_NUM_REDIS: ${PORT_NUM_REDIS}
+                CONT_NAME_REDIS: ${CONT_NAME_REDIS}
+                REDIS_SAVE_DURATION_IN_SEC: ${REDIS_SAVE_DURATION_IN_SEC}
+                REDIS_SAVE_MIN_REV: ${REDIS_SAVE_MIN_REV}
+        restart: always
+        networks:
+            - docker-network
+        volumes:
+            - ${VOLUME_NAME_REDIS_BACKUP}:/var/lib/redis
+
 # Define network
 networks:
     docker-network:
@@ -104,4 +124,11 @@ volumes:
         driver_opts:
             type: none
             device: ${HOST_PATH_DB}
+            o: bind
+
+    redis_backup:
+        name: ${VOLUME_NAME_REDIS_BACKUP}
+        driver_opts:
+            type: none
+            device: ${HOST_PATH_REDIS_BACKUP}
             o: bind

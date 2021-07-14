@@ -37,8 +37,9 @@ define( 'DB_CHARSET', 'utf8' );
 /** The Database Collate type. Don't change this if in doubt. */
 define( 'DB_COLLATE', '' );
 
-/** Define url for user to access my blog */
-// define( 'WP_HOME', 'https://tnishina.42.fr' );
+// redis config cache for total cache
+define( 'WP_REDIS_HOST', getenv('CONT_NAME_REDIS') );
+define( 'WP_REDIS_PORT', getenv('PORT_NUM_REDIS') );
 
 /**#@+
  * Authentication Unique Keys and Salts.

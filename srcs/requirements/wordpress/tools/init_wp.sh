@@ -29,6 +29,7 @@ if [ ! "$(ls -A /var/www/${DOMAIN_NAME})" ]; then
         --admin_user=${ADMIN_USER} \
         --admin_password=${ADMIN_PASSWORD} \
         --admin_email=${ADMIN_EMAIL}
+
     # create users as www-data using gosu
     gosu www-data \
         /usr/local/bin/wp user create \
@@ -36,4 +37,12 @@ if [ ! "$(ls -A /var/www/${DOMAIN_NAME})" ]; then
         ${USER_EMAIL} \
         --role=${ROLE} \
         --user_pass=${USER_PASSWORD}
+
+    # install redis cache plugin
+    gosu www-data \
+        /usr/local/bin/wp plugin install redis-cache --activate
+
+    # enable redis cache
+    gosu www-data /usr/local/bin/wp redis enable
+
 fi

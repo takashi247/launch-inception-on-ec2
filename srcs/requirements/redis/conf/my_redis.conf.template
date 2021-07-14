@@ -1,0 +1,3 @@
+bind ${CONT_NAME_REDIS}
+save ${REDIS_SAVE_DURATION_IN_SEC} ${REDIS_SAVE_MIN_REV}
+dir /var/lib/redis

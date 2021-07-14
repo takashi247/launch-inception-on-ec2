@@ -28,8 +28,17 @@ RUN set -ex; \
 
 # comment out bind-address configurations in .cnf files
 RUN set -ex; \
+	# find files whose file names end with .cnf and show them with replacing new lines with null characters (-print0)
 	find /etc/mysql/ -name '*.cnf' -print0 \
+	# deliminate input with null characters (xargs -0)
+	# -l: suppress normal output; only display file names with matches without duplication
+	# -Z: output a null character instead of the character that nomally follows file names (i.e., new lines)
+	# -E: use extended regular expression
 		| xargs -0 grep -lZE '^(bind-address\s)' \
+	# xargs -r: do not run the command if the standard input does not contain any nonblanks
+	# xargs -t: print the command line on the standard error output before executing it
+	# -E: use extended regular expression
+	# -i: edit files in place
 		| xargs -rt -0 sed -Ei 's/^(bind-address\s)/#&/';
 
 # Copy shell script template in tmp directory

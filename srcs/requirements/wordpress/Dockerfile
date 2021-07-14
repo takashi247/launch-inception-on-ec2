@@ -4,6 +4,7 @@ FROM debian:buster
 # Set necessary env variables
 ARG CONT_NAME_WORDPRESS
 ARG PORT_NUM_WORDPRESS
+ARG PORT_NUM_REDIS
 
 # Get necessary applications
 RUN set -ex; \
@@ -60,6 +61,7 @@ RUN chmod 777 /usr/local/bin/init_wp.sh
 
 # expose port 9000 in docker-network
 EXPOSE ${PORT_NUM_WORDPRESS}
+EXPOSE ${PORT_NUM_REDIS}
 
 # make necessary directory for executing php-fpm7.3
 RUN mkdir -p /run/php
