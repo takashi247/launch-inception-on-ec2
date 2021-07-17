@@ -1,0 +1,12 @@
+{
+  "listeners": {
+    "*:${PORT_NUM_STATIC}": {
+      "pass": "routes"
+    }
+  },
+  "routes": [
+      "action": {
+        "share": "/var/www/html/"
+      }
+  ]
+}
