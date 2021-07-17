@@ -106,6 +106,30 @@ services:
         volumes:
             - ${VOLUME_NAME_REDIS_BACKUP}:/var/lib/redis
 
+    ftp:
+        image: ${IMG_NAME_FTP}
+        container_name: ${CONT_NAME_FTP}
+        build:
+            context: ./requirements/ftp
+            args:
+                PORT_NUM_FTP1: ${PORT_NUM_FTP1}
+                PORT_NUM_FTP2: ${PORT_NUM_FTP2}
+        environment:
+            - FTP_USER=${FTP_USER}
+            - FTP_PASS=${FTP_PASS}
+            - DOMAIN_NAME=${DOMAIN_NAME}
+        restart: always
+        volumes:
+            - ${VOLUME_NAME_WP}:/home/vsftpd
+        depends_on:
+            - wordpress
+        networks:
+            - docker-network
+        ports:
+            - "20:20"
+            - "21:21"
+            - "47400-47470:47400-47470"
+
 # Define network
 networks:
     docker-network:
