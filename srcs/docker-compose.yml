@@ -65,8 +65,11 @@ services:
                 CERT_KEY: ${CERT_KEY}
                 PORT_NUM_NGINX: ${PORT_NUM_NGINX}
                 CONT_NAME_WORDPRESS: ${CONT_NAME_WORDPRESS}
+                CONT_NAME_ADMINER: ${CONT_NAME_ADMINER}
+                CONT_NAME_STATIC: ${CONT_NAME_STATIC}
                 PORT_NUM_WORDPRESS: ${PORT_NUM_WORDPRESS}
                 PORT_NUM_ADMINER: ${PORT_NUM_ADMINER}
+                PORT_NUM_STATIC: ${PORT_NUM_STATIC}
         ports:
             - "443:443"
         networks:
@@ -129,6 +132,19 @@ services:
             - "20:20"
             - "21:21"
             - "47400-47470:47400-47470"
+
+    static:
+        image: ${IMG_NAME_STATIC}
+        container_name: ${CONT_NAME_STATIC}
+        build:
+            context: ./requirements/static
+            args:
+                PORT_NUM_STATIC: ${PORT_NUM_STATIC}
+        restart: always
+        networks:
+            - docker-network
+        depends_on:
+            - nginx
 
 # Define network
 networks:
