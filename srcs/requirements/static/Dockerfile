@@ -23,9 +23,6 @@ RUN set -ex; \
     apt-get -y install \
     # install unit and related packages
         unit \
-        unit-php \
-        php \
-        php-mysql \
     # to use envsubst
         gettext-base; \
     # delete apt-get caches
@@ -36,7 +33,7 @@ COPY ./conf/config.json.template /tmp/config.json.template
 COPY ./tools/index.html /var/www/html/
 
 # replace environment variables in template
-RUN envsubst '$$PORT_NUM_ADMINER' \
+RUN envsubst '$$PORT_NUM_STATIC' \
     < /tmp/config.json.template > /tmp/config.json
 
 # configure nginx Unit through REST API
@@ -48,8 +45,9 @@ RUN unitd \
         -d @/tmp/config.json \
     # specify unix socket and url path
         --unix-socket /run/control.unit.sock http://localhost/config \
-    # change permission for css file
-    && chmod +r /var/www/html/index.html
+    # change permission and owner for html file
+    && chmod -R 777 /var/www/html \
+    && chown -R www-data:www-data /var/www/html
 
 # expose port
 EXPOSE ${PORT_NUM_STATIC}

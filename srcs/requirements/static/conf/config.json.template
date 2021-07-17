@@ -5,8 +5,10 @@
     }
   },
   "routes": [
+    {
       "action": {
         "share": "/var/www/html/"
       }
+    }
   ]
 }

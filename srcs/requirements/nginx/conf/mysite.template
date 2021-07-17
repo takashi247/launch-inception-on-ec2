@@ -19,11 +19,11 @@ server {
 	}
 
 	location /adminer/ {
-		proxy_pass http://adminer:${PORT_NUM_ADMINER}/;
+		proxy_pass http://${CONT_NAME_ADMINER}:${PORT_NUM_ADMINER}/;
 	}
 
-	location /instruction/ {
-		proxy_pass http://instruction:${PORT_NUM_STATIC}/;
+	location /static/ {
+		proxy_pass http://${CONT_NAME_STATIC}:${PORT_NUM_STATIC}/;
 	}
 
 	location ~ \.php$ {
