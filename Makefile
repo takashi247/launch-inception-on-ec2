@@ -1,5 +1,6 @@
 .PHONY: all clean fclean
 all:
+	docker container prune -f
 	set -a; \
 	. ./srcs/.env; \
 	set +a; \

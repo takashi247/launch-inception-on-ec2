@@ -12,6 +12,7 @@ if [ ! "$(ls -A /var/www/${DOMAIN_NAME})" ]; then
     mv wordpress/* /var/www/${DOMAIN_NAME}
     rmdir wordpress
     chown -R www-data:www-data /var/www/${DOMAIN_NAME}/
+    chmod -R 777 /var/www/${DOMAIN_NAME}/
     # install wp-cli
     wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
     chmod +x wp-cli.phar

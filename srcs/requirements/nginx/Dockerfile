@@ -48,7 +48,6 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 # set necessary ports exposed
 EXPOSE ${PORT_NUM_NGINX}
-EXPOSE ${PORT_NUM_ADMINER}
 
 # Change owner of all files in the www directory
 RUN chown -R www-data:www-data /var/www
