@@ -26,6 +26,10 @@ server {
 		proxy_pass http://${CONT_NAME_STATIC}:${PORT_NUM_STATIC}/;
 	}
 
+	location /grafana/ {
+		proxy_pass http://${CONT_NAME_GRAFANA}:${PORT_NUM_GRAFANA}/;
+	}
+
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
 		fastcgi_pass php-upstream;

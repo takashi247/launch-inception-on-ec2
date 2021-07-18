@@ -1,7 +1,7 @@
 apiVersion: 1
 
 providers:
-- name: 'wp_dashboard'
+- name: ${GRAFANA_DASHBOARD_NAME}
   orgId: 1
   folder: ''
   type: file

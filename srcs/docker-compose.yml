@@ -67,9 +67,11 @@ services:
                 CONT_NAME_WORDPRESS: ${CONT_NAME_WORDPRESS}
                 CONT_NAME_ADMINER: ${CONT_NAME_ADMINER}
                 CONT_NAME_STATIC: ${CONT_NAME_STATIC}
+                CONT_NAME_GRAFANA: ${CONT_NAME_GRAFANA}
                 PORT_NUM_WORDPRESS: ${PORT_NUM_WORDPRESS}
                 PORT_NUM_ADMINER: ${PORT_NUM_ADMINER}
                 PORT_NUM_STATIC: ${PORT_NUM_STATIC}
+                PORT_NUM_GRAFANA: ${PORT_NUM_GRAFANA}
         ports:
             - "443:443"
         networks:
@@ -153,11 +155,21 @@ services:
             context: ./requirements/grafana
             args:
                 PORT_NUM_GRAFANA: ${PORT_NUM_GRAFANA}
+                CONT_NAME_MARIADB: ${CONT_NAME_MARIADB}
+                PORT_NUM_MARIADB: ${PORT_NUM_MARIADB}
+                MYSQL_USER: ${MYSQL_USER}
+                MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+                MYSQL_DATABASE: ${MYSQL_DATABASE}
+                GRAFANA_DATASOURCES_NAME: ${GRAFANA_DATASOURCES_NAME}
+                GRAFANA_DASHBOARD_NAME: ${GRAFANA_DASHBOARD_NAME}
+        environment:
+            - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}
+            - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+            - GF_SERVER_SERVE_FROM_SUB_PATH=${GF_SERVER_SERVE_FROM_SUB_PATH}
+            - GF_SERVER_ROOT_URL=https://${DOMAIN_NAME}/${CONT_NAME_GRAFANA}/
         restart: always
         networks:
             - docker-network
-        ports:
-            - "3000:3000"
         depends_on:
             - wordpress
             - mariadb

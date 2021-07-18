@@ -1,0 +1,14 @@
+apiVersion: 1
+
+datasources:
+- name: ${GRAFANA_DATASOURCES_NAME}
+  type: mysql
+  access: proxy
+  orgId: 1
+  url: ${CONT_NAME_MARIADB}:${PORT_NUM_MARIADB}
+  user: ${MYSQL_USER}
+  password: ${MYSQL_PASSWORD}
+  database: ${MYSQL_DATABASE}
+  isDefault: true
+  editable: true
+  version: 1

@@ -3,9 +3,11 @@
 # install plugin using cli
 /usr/share/grafana/bin/grafana-cli plugins install grafana-piechart-panel
 
-
+# move Grafana's working directory
 cd /usr/share/grafana
+
+# update some config values using env variables
 export GF_PATHS_PLUGINS=/var/lib/grafana/plugins
-export GF_SECURITY_ADMIN_USER=gf_admin
-export GF_SECURITY_ADMIN_PASSWORD=gf_admin_pass
+
+# start grafana server
 grafana-server --config /usr/share/grafana/conf/defaults.ini

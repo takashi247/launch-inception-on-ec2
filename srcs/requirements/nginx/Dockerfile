@@ -9,9 +9,11 @@ ARG PORT_NUM_NGINX
 ARG CONT_NAME_WORDPRESS
 ARG CONT_NAME_ADMINER
 ARG CONT_NAME_STATIC
+ARG CONT_NAME_GRAFANA
 ARG PORT_NUM_WORDPRESS
 ARG PORT_NUM_ADMINER
 ARG PORT_NUM_STATIC
+ARG PORT_NUM_GRAFANA
 
 # Get necessary applications
 RUN set -ex; \
@@ -38,7 +40,7 @@ COPY conf/default.conf.template /etc/nginx/conf.d/
 COPY conf/mysite.template /etc/nginx/sites-available
 
 # Convert environment variables in template file
-RUN envsubst '$$DOMAIN_NAME$$CERT_PATH$$CERT_KEY$$PORT_NUM_ADMINER$$PORT_NUM_STATIC$$CONT_NAME_ADMINER$$CONT_NAME_STATIC' \
+RUN envsubst '$$DOMAIN_NAME$$CERT_PATH$$CERT_KEY$$PORT_NUM_ADMINER$$PORT_NUM_STATIC$$CONT_NAME_ADMINER$$CONT_NAME_STATIC$$PORT_NUM_GRAFANA$$CONT_NAME_GRAFANA' \
 	< /etc/nginx/sites-available/mysite.template > /etc/nginx/sites-available/mysite.conf && \
 	envsubst '$$CONT_NAME_WORDPRESS$$PORT_NUM_WORDPRESS' \
 	< /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf;
