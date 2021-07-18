@@ -1,0 +1,774 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "Wordpress statistics dashboard includes:\n - Top 5 pages\n - Top browsers\n - Top 10 Referring Sites\n - Top Engines\n - Total Visitors \n - Total Online Users\n - Total Visits\n - Top 10 Countries (Count Visitor)\n - Top 10 Countries (Hits)\n - Visit & Visitor in the last 10 days\n",
+    "editable": true,
+    "gnetId": 13191,
+    "graphTooltip": 0,
+    "id": 1,
+    "links": [],
+    "panels": [
+      {
+        "datasource": "${GRAFANA_DATASOURCES_NAME}",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": null,
+              "displayMode": "auto",
+              "filterable": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Link"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 472
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Visits"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 113
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "post_title"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 378
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Post Title"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 208
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 6,
+          "x": 0,
+          "y": 0
+        },
+        "id": 13,
+        "options": {
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "8.0.6",
+        "targets": [
+          {
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT b.post_title as 'Post Title', sum(a.count) as Visits \nFROM wp_statistics_pages a, wp_posts b \nwhere a.id=b.ID \ngroup by a.id \norder by Visits desc\nlimit 5;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "comment_ID"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "wp_comments",
+            "timeColumn": "comment_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Top 5 Pages",
+        "transparent": true,
+        "type": "table"
+      },
+      {
+        "cacheTimeout": null,
+        "datasource": "${GRAFANA_DATASOURCES_NAME}",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "decimals": 0,
+            "mappings": [],
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 6,
+          "x": 6,
+          "y": 0
+        },
+        "id": 11,
+        "interval": null,
+        "links": [],
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "table",
+            "placement": "bottom",
+            "values": [
+              "percent"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "7.1.5",
+        "repeat": null,
+        "targets": [
+          {
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select now() AS \"time\", \ncase \nwhen agent like 'Chrome' then 'Chrome'\nwhen agent like 'FireFox' then 'FireFox'\nwhen agent like 'Safari' then 'Safari'\nwhen agent like 'Samsung Internet' then 'Samsung Internet'\nwhen agent like 'Unknown' then 'Other'\nend\nagent, count(*) FROM wp_statistics_visitor\nwhere agent in ('Chrome', 'FireFox', 'Safari', 'Samsung Internet', 'Unknown') group by agent;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "hits"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "wp_statistics_visitor",
+            "timeColumn": "honeypot",
+            "timeColumnType": "int",
+            "where": []
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Top Browsers",
+        "transparent": true,
+        "type": "piechart"
+      },
+      {
+        "datasource": "${GRAFANA_DATASOURCES_NAME}",
+        "fieldConfig": {
+          "defaults": {
+            "displayName": "Total Visitors",
+            "mappings": [],
+            "max": 1000000,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgb(22, 182, 210)",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 7,
+          "x": 12,
+          "y": 0
+        },
+        "id": 7,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.0.6",
+        "targets": [
+          {
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT count(id) as 'Total Visitor' FROM wp_statistics_visitor;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "comment_ID"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "wp_comments",
+            "timeColumn": "comment_post_ID",
+            "timeColumnType": "bigint",
+            "where": [
+              {
+                "name": "$__unixEpochFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "type": "stat"
+      },
+      {
+        "datasource": "${GRAFANA_DATASOURCES_NAME}",
+        "fieldConfig": {
+          "defaults": {
+            "displayName": "Total Visits",
+            "mappings": [],
+            "max": 1000000,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgb(43, 161, 86)",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 5,
+          "x": 19,
+          "y": 0
+        },
+        "id": 6,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.0.6",
+        "targets": [
+          {
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT sum(visit) as 'Total Visits' FROM wp_statistics_visit order by last_visit desc limit 15;\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "comment_ID"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "wp_comments",
+            "timeColumn": "comment_post_ID",
+            "timeColumnType": "bigint",
+            "where": [
+              {
+                "name": "$__unixEpochFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "type": "stat"
+      },
+      {
+        "datasource": "${GRAFANA_DATASOURCES_NAME}",
+        "fieldConfig": {
+          "defaults": {
+            "displayName": "Total Online Users",
+            "mappings": [],
+            "max": 1000000,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgb(22, 126, 210)",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 5,
+          "x": 19,
+          "y": 4
+        },
+        "id": 17,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.0.6",
+        "targets": [
+          {
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT count(*) as 'Online Users' FROM wp_statistics_useronline;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "comment_ID"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "wp_comments",
+            "timeColumn": "comment_post_ID",
+            "timeColumnType": "bigint",
+            "where": [
+              {
+                "name": "$__unixEpochFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "type": "stat"
+      },
+      {
+        "datasource": "${GRAFANA_DATASOURCES_NAME}",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": null,
+              "displayMode": "auto",
+              "filterable": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Browser"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 185
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Country"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 157
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Referred"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 358
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Domain"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 173
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 6,
+          "x": 0,
+          "y": 7
+        },
+        "id": 4,
+        "options": {
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "8.0.6",
+        "targets": [
+          {
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(referred, '/', 3), '://', -1), '/', 1), '?', 1),'www.',-1)\n AS Domain,\n count(*) AS 'References Hits' \n FROM wp_statistics_visitor\n group by domain order by 'References Hits' desc limit 10;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "comment_ID"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "wp_comments",
+            "timeColumn": "comment_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Top 10 Referring Sites",
+        "type": "table"
+      },
+      {
+        "aliasColors": {
+          "Visit": "rgb(28, 184, 235)",
+          "Visitor": "rgb(159, 21, 227)",
+          "Visitorrs": "rgb(65, 250, 42)",
+          "Visits": "rgb(28, 235, 255)",
+          "visit": "rgb(32, 99, 243)"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "${GRAFANA_DATASOURCES_NAME}",
+        "decimals": null,
+        "fill": 2,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 10,
+          "w": 18,
+          "x": 6,
+          "y": 10
+        },
+        "hiddenSeries": false,
+        "id": 2,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": true,
+          "hideEmpty": false,
+          "hideZero": false,
+          "max": true,
+          "min": true,
+          "rightSide": false,
+          "show": true,
+          "total": true,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": false
+        },
+        "percentage": false,
+        "pluginVersion": "8.0.6",
+        "pointradius": 2,
+        "points": true,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "alias": "Visit",
+            "yaxis": 1
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  last_visit AS \"time\",\n  Visit\nFROM wp_statistics_visit\nWHERE\n  $__timeFilter(last_visit)\nORDER BY last_visit",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "visit"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "wp_statistics_visit",
+            "timeColumn": "last_visit",
+            "timeColumnType": "datetime",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          },
+          {
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT DATE(last_counter) as time, count(*) as Visitor FROM wp_statistics_visitor group by last_counter;",
+            "refId": "B",
+            "select": [
+              [
+                {
+                  "params": [
+                    "comment_ID"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "wp_comments",
+            "timeColumn": "comment_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Visit & Visitor in the last 10 days",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "transparent": true,
+        "type": "graph",
+        "xaxis": {
+          "buckets": 10,
+          "max": 10,
+          "min": 1,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:252",
+            "format": "short",
+            "label": null,
+            "logBase": 2,
+            "max": null,
+            "min": null,
+            "show": false
+          },
+          {
+            "$$hashKey": "object:253",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "refresh": "",
+    "schemaVersion": 30,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-7d",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "Wordpress statistics dashboard",
+    "uid": "g_pMQ3i7k",
+    "version": 1
+}

@@ -46,4 +46,9 @@ if [ ! "$(ls -A /var/www/${DOMAIN_NAME})" ]; then
     # enable redis cache
     gosu www-data /usr/local/bin/wp redis enable
 
+    # install wp-statistics for visualization using grafana
+    gosu www-data /usr/local/bin/wp \
+        plugin install https://downloads.wordpress.org/plugin/wp-statistics.13.0.8.zip \
+        --activate
+
 fi
