@@ -146,6 +146,22 @@ services:
         depends_on:
             - nginx
 
+    grafana:
+        image: ${IMG_NAME_GRAFANA}
+        container_name: ${CONT_NAME_GRAFANA}
+        build:
+            context: ./requirements/grafana
+            args:
+                PORT_NUM_GRAFANA: ${PORT_NUM_GRAFANA}
+        restart: always
+        networks:
+            - docker-network
+        ports:
+            - "3000:3000"
+        depends_on:
+            - wordpress
+            - mariadb
+
 # Define network
 networks:
     docker-network:

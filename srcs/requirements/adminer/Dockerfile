@@ -60,4 +60,4 @@ RUN unitd \
 EXPOSE ${PORT_NUM_ADMINER}
 
 # run unit in foregroud
-CMD [ "unitd", "--no-daemon" ]
+ENTRYPOINT [ "unitd", "--no-daemon" ]

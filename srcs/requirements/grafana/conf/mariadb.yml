@@ -1,0 +1,14 @@
+apiVersion: 1
+
+datasources:
+- name: wpdb_mariadb
+  type: mysql
+  access: proxy
+  orgId: 1
+  url: mariadb:3306
+  user: wpuser
+  password: dbpassword
+  database: wpdb
+  isDefault: true
+  editable: true
+  version: 1
