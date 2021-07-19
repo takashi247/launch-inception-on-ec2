@@ -22,7 +22,7 @@ server {
 		proxy_pass http://${CONT_NAME_ADMINER}:${PORT_NUM_ADMINER}/;
 	}
 
-	location /static/ {
+	location /instruction/ {
 		proxy_pass http://${CONT_NAME_STATIC}:${PORT_NUM_STATIC}/;
 	}
 
