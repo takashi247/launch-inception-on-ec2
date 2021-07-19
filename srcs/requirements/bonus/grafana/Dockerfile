@@ -10,6 +10,7 @@ ARG MYSQL_PASSWORD
 ARG MYSQL_DATABASE
 ARG GRAFANA_DATASOURCES_NAME
 ARG GRAFANA_DASHBOARD_NAME
+ARG TINI_VERSION
 
 # install required applications incl. grafana
 RUN set -ex; \
@@ -47,4 +48,9 @@ RUN chmod 777 /usr/local/bin/init_grafana.sh
 
 EXPOSE ${PORT_NUM_GRAFANA}
 
-ENTRYPOINT [ "init_grafana.sh" ]
+# install and run tini to avoid PID 1 issue
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN chmod +x /tini
+ENTRYPOINT ["/tini", "--"]
+
+CMD [ "init_grafana.sh" ]

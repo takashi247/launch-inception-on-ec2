@@ -8,6 +8,7 @@ ARG PORT_NUM_FTP3
 ARG CERT_PATH
 ARG CERT_KEY
 ARG DOMAIN_NAME
+ARG TINI_VERSION
 
 # Get necessary applications
 RUN set -ex; \
@@ -46,4 +47,9 @@ EXPOSE ${PORT_NUM_FTP1}
 EXPOSE ${PORT_NUM_FTP2}
 EXPOSE ${PORT_NUM_FTP3}
 
-ENTRYPOINT [ "init_vsftpd.sh" ]
+# install and run tini to avoid PID 1 issue
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN chmod +x /tini
+ENTRYPOINT ["/tini", "--"]
+
+CMD [ "init_vsftpd.sh" ]

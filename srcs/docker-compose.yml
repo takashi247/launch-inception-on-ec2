@@ -124,6 +124,7 @@ services:
                 PORT_NUM_FTP3: ${PORT_NUM_FTP3}
                 CERT_PATH: ${CERT_PATH}
                 CERT_KEY: ${CERT_KEY}
+                TINI_VERSION: ${TINI_VERSION}
         environment:
             - FTP_USER=${FTP_USER}
             - FTP_PASS=${FTP_PASS}
@@ -167,6 +168,7 @@ services:
                 MYSQL_DATABASE: ${MYSQL_DATABASE}
                 GRAFANA_DATASOURCES_NAME: ${GRAFANA_DATASOURCES_NAME}
                 GRAFANA_DASHBOARD_NAME: ${GRAFANA_DASHBOARD_NAME}
+                TINI_VERSION: ${TINI_VERSION}
         environment:
             - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}
             - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
