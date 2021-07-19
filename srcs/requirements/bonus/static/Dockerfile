@@ -2,7 +2,7 @@
 FROM debian:buster
 
 # set necessary env variables
-ARG PORT_NUM_ADMINER
+ARG PORT_NUM_STATIC
 
 # get curl to download adminer and congiture Nginx Unit
 RUN set -ex; \
@@ -23,26 +23,19 @@ RUN set -ex; \
     apt-get -y install \
     # install unit and related packages
         unit \
-        unit-php \
-        php \
-        php-mysql \
     # to use envsubst
         gettext-base; \
     # delete apt-get caches
     rm -rf /var/lib/apt/lists;
 
-# download adminer
-RUN mkdir -p /var/www/html \
-    && curl -L https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1.php \
-    > /var/www/html/adminer.php
-
 # copy config template for Nginx Unit and css file for adminer
 COPY ./conf/config.json.template /tmp/config.json.template
-COPY ./conf/adminer.css /var/www/html/adminer.css
+COPY ./tools/index.html /var/www/html/
 
 # replace environment variables in template
-RUN envsubst '$$PORT_NUM_ADMINER' \
-    < /tmp/config.json.template > /tmp/config.json
+RUN envsubst '$$PORT_NUM_STATIC' \
+    < /tmp/config.json.template > /tmp/config.json; \
+    rm /tmp/config.json.template;
 
 # configure nginx Unit through REST API
 RUN unitd \
@@ -53,11 +46,12 @@ RUN unitd \
         -d @/tmp/config.json \
     # specify unix socket and url path
         --unix-socket /run/control.unit.sock http://localhost/config \
-    # change permission for css file
-    && chmod +r /var/www/html/adminer.css
+    # change permission and owner for html file
+    && chmod -R 777 /var/www/html \
+    && chown -R www-data:www-data /var/www/html
 
 # expose port
-EXPOSE ${PORT_NUM_ADMINER}
+EXPOSE ${PORT_NUM_STATIC}
 
 # run unit in foregroud
 ENTRYPOINT [ "unitd", "--no-daemon" ]

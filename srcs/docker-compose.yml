@@ -13,6 +13,7 @@ services:
                 MYSQL_DATABASE: ${MYSQL_DATABASE}
                 MYSQL_USER: ${MYSQL_USER}
                 MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+                PORT_NUM_MARIADB: ${PORT_NUM_MARIADB}
         networks:
             - docker-network
         volumes:
@@ -86,7 +87,7 @@ services:
         image: ${IMG_NAME_ADMINER}
         container_name: ${CONT_NAME_ADMINER}
         build:
-            context: ./requirements/adminer
+            context: ./requirements/bonus/adminer
             args:
                 PORT_NUM_ADMINER: ${PORT_NUM_ADMINER}
         restart: always
@@ -99,7 +100,7 @@ services:
         image: ${IMG_NAME_REDIS}
         container_name: ${CONT_NAME_REDIS}
         build:
-            context: ./requirements/redis
+            context: ./requirements/bonus/redis
             args:
                 PORT_NUM_REDIS: ${PORT_NUM_REDIS}
                 CONT_NAME_REDIS: ${CONT_NAME_REDIS}
@@ -115,7 +116,7 @@ services:
         image: ${IMG_NAME_FTP}
         container_name: ${CONT_NAME_FTP}
         build:
-            context: ./requirements/ftp
+            context: ./requirements/bonus/ftp
             args:
                 PORT_NUM_FTP1: ${PORT_NUM_FTP1}
                 PORT_NUM_FTP2: ${PORT_NUM_FTP2}
@@ -139,7 +140,7 @@ services:
         image: ${IMG_NAME_STATIC}
         container_name: ${CONT_NAME_STATIC}
         build:
-            context: ./requirements/static
+            context: ./requirements/bonus/static
             args:
                 PORT_NUM_STATIC: ${PORT_NUM_STATIC}
         restart: always
@@ -152,7 +153,7 @@ services:
         image: ${IMG_NAME_GRAFANA}
         container_name: ${CONT_NAME_GRAFANA}
         build:
-            context: ./requirements/grafana
+            context: ./requirements/bonus/grafana
             args:
                 PORT_NUM_GRAFANA: ${PORT_NUM_GRAFANA}
                 CONT_NAME_MARIADB: ${CONT_NAME_MARIADB}

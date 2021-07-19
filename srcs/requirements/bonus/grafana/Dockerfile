@@ -11,7 +11,7 @@ ARG MYSQL_DATABASE
 ARG GRAFANA_DATASOURCES_NAME
 ARG GRAFANA_DASHBOARD_NAME
 
-# get curl to download adminer and congiture Nginx Unit
+# install required applications incl. grafana
 RUN set -ex; \
     apt-get update; \
     apt-get -y install \
@@ -25,11 +25,6 @@ RUN set -ex; \
     echo "deb https://packages.grafana.com/oss/deb stable main" | tee -a /etc/apt/sources.list.d/grafana.list; \
     apt-get update; \
     apt-get -y install grafana;
-
-# for debugging
-RUN set -ex; \
-    apt-get update; \
-    apt-get -y install vim;
 
 # copy .yml files
 COPY ./conf/mariadb.yml.template /tmp/

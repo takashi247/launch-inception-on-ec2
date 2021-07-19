@@ -23,8 +23,9 @@ COPY ./conf/my_redis.conf.template /tmp/
 
 # replace env variables
 RUN envsubst '$$CONT_NAME_REDIS$$REDIS_SAVE_MIN_REV$$REDIS_SAVE_DURATION_IN_SEC' \
-    < /tmp/my_redis.conf.template > /tmp/my_redis.conf
+    < /tmp/my_redis.conf.template > /tmp/my_redis.conf; \
+    rm /tmp/my_redis.conf.template;
 
 EXPOSE ${PORT_NUM_REDIS}
 
-CMD ["redis-server", "/tmp/my_redis.conf"]
+ENTRYPOINT ["redis-server", "/tmp/my_redis.conf"]

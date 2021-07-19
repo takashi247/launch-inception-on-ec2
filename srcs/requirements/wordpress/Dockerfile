@@ -50,7 +50,8 @@ COPY conf/www.conf.template /tmp
 
 # Convert environment variables in template file
 RUN envsubst '$$CONT_NAME_WORDPRESS$$PORT_NUM_WORDPRESS' \
-	< /tmp/www.conf.template > /etc/php/7.3/fpm/pool.d/www.conf
+	< /tmp/www.conf.template > /etc/php/7.3/fpm/pool.d/www.conf; \
+	rm /tmp/www.conf.template;
 
 # Copy wp-config file
 COPY conf/wp-config.php /tmp/
@@ -59,7 +60,7 @@ COPY conf/wp-config.php /tmp/
 COPY tools/init_wp.sh /usr/local/bin/
 RUN chmod 777 /usr/local/bin/init_wp.sh
 
-# expose port 9000 in docker-network
+# expose port 9000 for wordpress and 6379 for redis in docker-network
 EXPOSE ${PORT_NUM_WORDPRESS}
 EXPOSE ${PORT_NUM_REDIS}
 
@@ -67,4 +68,4 @@ EXPOSE ${PORT_NUM_REDIS}
 RUN mkdir -p /run/php
 
 # execute php-fpm in foreground
-CMD ["php-fpm7.3", "-F"]
+ENTRYPOINT ["php-fpm7.3", "-F"]

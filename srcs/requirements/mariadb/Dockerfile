@@ -5,6 +5,7 @@ ARG MYSQL_ROOT_PASSWORD
 ARG MYSQL_USER
 ARG MYSQL_DATABASE
 ARG MYSQL_PASSWORD
+ARG PORT_NUM_MARIADB
 
 # install necessary packages
 RUN set -ex; \
@@ -46,10 +47,11 @@ COPY tools/init.template /tmp/
 
 # Convert environment variables in template file
 RUN envsubst '$$MYSQL_ROOT_PASSWORD$$MYSQL_USER$$MYSQL_DATABASE$$MYSQL_PASSWORD' \
-	< /tmp/init.template > /usr/local/bin/init.sh
+	< /tmp/init.template > /usr/local/bin/init.sh; \
+	rm /tmp/*;
 
 RUN chmod 777 /usr/local/bin/init.sh
 
-EXPOSE 3306
+EXPOSE ${PORT_NUM_MARIADB}
 
 ENTRYPOINT ["init.sh"]

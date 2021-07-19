@@ -22,6 +22,7 @@ COPY ./conf/vsftpd_virtual /etc/pam.d/
 
 RUN chmod 777 /usr/local/bin/init_vsftpd.sh
 
-EXPOSE ${PORT_NUM_FTP1} ${PORT_NUM_FTP2}
+EXPOSE ${PORT_NUM_FTP1}
+EXPOSE ${PORT_NUM_FTP2}
 
-CMD [ "init_vsftpd.sh" ]
+ENTRYPOINT [ "init_vsftpd.sh" ]
