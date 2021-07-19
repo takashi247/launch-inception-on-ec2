@@ -16,7 +16,6 @@
   "editable": true,
   "gnetId": 13191,
   "graphTooltip": 0,
-  "id": 1,
   "links": [],
   "panels": [
     {
@@ -105,7 +104,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "7.4.5",
       "targets": [
         {
           "format": "table",
@@ -143,26 +142,27 @@
       "type": "table"
     },
     {
+      "aliasColors": {},
+      "breakPoint": "50%",
       "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
       "datasource": "${GRAFANA_DATASOURCES_NAME}",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "decimals": 0,
-          "mappings": [],
-          "unit": "short"
+          "color": {},
+          "custom": {},
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          }
         },
         "overrides": []
       },
+      "fontSize": "80%",
+      "format": "short",
       "gridPos": {
         "h": 9,
         "w": 6,
@@ -171,30 +171,17 @@
       },
       "id": 11,
       "interval": null,
-      "links": [],
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "bottom",
-          "values": [
-            "percent"
-          ]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "tooltip": {
-          "mode": "single"
-        }
+      "legend": {
+        "show": true,
+        "values": true
       },
-      "pluginVersion": "7.1.5",
+      "legendType": "Under graph",
+      "links": [],
+      "nullPointMode": "connected",
+      "pieType": "pie",
+      "pluginVersion": "7.4.5",
       "repeat": null,
+      "strokeWidth": 1,
       "targets": [
         {
           "format": "time_series",
@@ -223,12 +210,14 @@
       "timeShift": null,
       "title": "Top Browsers",
       "transparent": true,
-      "type": "piechart"
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
     },
     {
       "datasource": "${GRAFANA_DATASOURCES_NAME}",
       "fieldConfig": {
         "defaults": {
+          "custom": {},
           "displayName": "Total Visitors",
           "mappings": [],
           "max": 1000000,
@@ -268,7 +257,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "7.4.5",
       "targets": [
         {
           "format": "table",
@@ -307,6 +296,7 @@
       "datasource": "${GRAFANA_DATASOURCES_NAME}",
       "fieldConfig": {
         "defaults": {
+          "custom": {},
           "displayName": "Total Visits",
           "mappings": [],
           "max": 1000000,
@@ -346,7 +336,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "7.4.5",
       "targets": [
         {
           "format": "table",
@@ -385,6 +375,7 @@
       "datasource": "${GRAFANA_DATASOURCES_NAME}",
       "fieldConfig": {
         "defaults": {
+          "custom": {},
           "displayName": "Total Online Users",
           "mappings": [],
           "max": 1000000,
@@ -424,7 +415,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "7.4.5",
       "targets": [
         {
           "format": "table",
@@ -557,7 +548,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "7.4.5",
       "targets": [
         {
           "format": "table",
@@ -606,6 +597,12 @@
       "dashes": false,
       "datasource": "${GRAFANA_DATASOURCES_NAME}",
       "decimals": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -636,7 +633,7 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "7.4.5",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -755,7 +752,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 30,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {

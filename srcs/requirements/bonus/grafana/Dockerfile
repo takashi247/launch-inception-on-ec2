@@ -16,16 +16,17 @@ ARG TINI_VERSION
 RUN set -ex; \
     apt-get update; \
     apt-get -y install \
-        apt-transport-https \
-        software-properties-common \
         wget \
     # to use envsubst
-        gettext-base \
-        gnupg; \
-    wget -q -O - https://packages.grafana.com/gpg.key | apt-key add -; \
-    echo "deb https://packages.grafana.com/oss/deb stable main" | tee -a /etc/apt/sources.list.d/grafana.list; \
-    apt-get update; \
-    apt-get -y install grafana;
+        gettext-base;
+
+# install grafana from tar file
+RUN set -ex; \
+	wget https://dl.grafana.com/oss/release/grafana-7.4.5.linux-amd64.tar.gz; \
+	tar -zxvf grafana-7.4.5.linux-amd64.tar.gz; \
+	rm grafana-7.4.5.linux-amd64.tar.gz; \
+	mv grafana-7.4.5 grafana; \
+	mv grafana/ /usr/share/
 
 # copy .yml files
 COPY ./conf/mariadb.yml.template /tmp/

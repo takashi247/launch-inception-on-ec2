@@ -10,4 +10,4 @@ cd /usr/share/grafana
 export GF_PATHS_PLUGINS=/var/lib/grafana/plugins
 
 # start grafana server
-grafana-server --config /usr/share/grafana/conf/defaults.ini
+./bin/grafana-server --config /usr/share/grafana/conf/defaults.ini

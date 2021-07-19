@@ -1,9 +1,42 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Instructions</title>
-    </head>
-    <body>
-        <p>Hello world!</p>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inception: Review instruction</title>
+    <style>
+        body {width: 80%; margin: auto;}
+    </style>
+</head>
+<body>
+    <h1>Inception: Review instruction for bonus part</h1>
+    <h2>Redis cache</h2>
+    <ul>
+        <li><a href="https://tnishina.42.fr/wp-admin/" target="_blank">Jump to Wordpress admin page</a></li>
+        <li>Log in as admin account (Username: wordpress, Password: wordpress)</li>
+        <li>Go to "Setting" >> "Redis"</li>
+    </ul>
+    <h2>FTP server</h2>
+    <ul>
+        <li>Install lftp ("sudo apt-get update && sudo apt-get install lftp")</li>
+        <li>Connect to ftp server ("lftp -e 'set ssl:verify-certificate false' -u ftpuser -p 21 tnishina.42.fr")</li>
+        <li>Type in ftp password ("Password: ftppass")</li>
+        <li>Create text.txt in local directory ("!echo "aaaaa" > test.txt")</li>
+        <li>Upload text.txt to ftp server ("put test.txt")</li>
+        <li>Remove text.txt from local directory ("!rm test.txt")</li>
+        <li>Download text.txt from ftp server ("get test.txt")</li>
+    </ul>
+    <h2>Adminer</h2>
+    <ul>
+        <li><a href="https://tnishina.42.fr/adminer/" target="_blank">Jump to Adminer website</a></li>
+        <li>Log in as mariadb account (Server: mariadb, Username: wpuser, Password: dbpassword, Database: wpdb)</li>
+        <li>Check tables if posts and comments are properly stored</li>
+    </ul>
+    <h2>Additional: Grafana</h2>
+    <ul>
+        <li><a href="https://tnishina.42.fr/grafana/" target="_blank">Jump to Grafana website</a></li>
+        <li>Log in as grafana admin account (Username: gf_admin, Password: gf_admin_pass)</li>
+        <li>Click "Search" on the left panel and then go to "Wordpress statistics dashboard"</li>
+    </ul>
+</body>
 </html>
