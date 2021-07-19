@@ -51,4 +51,8 @@ if [ ! "$(ls -A /var/www/${DOMAIN_NAME})" ]; then
         plugin install https://downloads.wordpress.org/plugin/wp-statistics.13.0.8.zip \
         --activate
 
+    # update timezone
+    gosu www-data /usr/local/bin/wp \
+        option update timezone_string "Asia/Tokyo"
+
 fi
