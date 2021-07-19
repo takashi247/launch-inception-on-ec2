@@ -140,11 +140,11 @@ services:
             - "21:21"
             - "40000:40000"
 
-    static:
+    static_web:
         image: ${IMG_NAME_STATIC}
         container_name: ${CONT_NAME_STATIC}
         build:
-            context: ./requirements/bonus/static
+            context: ./requirements/bonus/static_web
             args:
                 PORT_NUM_STATIC: ${PORT_NUM_STATIC}
         restart: always
