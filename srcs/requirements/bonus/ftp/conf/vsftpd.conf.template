@@ -52,8 +52,8 @@ pasv_addr_resolve=YES
 pasv_enable=YES
 
 ## Set passive ports range
-pasv_min_port=47400
-pasv_max_port=47470
+pasv_min_port=${PORT_NUM_FTP3}
+pasv_max_port=${PORT_NUM_FTP3}
 
 ## Enable logging
 xferlog_enable=YES
@@ -69,3 +69,15 @@ ftp_data_port=20
 
 ## Disable seccomp filter sanboxing
 seccomp_sandbox=NO
+
+## Enable TLS
+ssl_enable=YES
+
+## Specify protocol
+ssl_sslv2=NO
+ssl_sslv3=NO
+ssl_tlsv1=YES
+
+## ssl certificate and key
+rsa_cert_file=${CERT_PATH}
+rsa_private_key_file=${CERT_KEY}

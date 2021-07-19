@@ -118,8 +118,12 @@ services:
         build:
             context: ./requirements/bonus/ftp
             args:
+                DOMAIN_NAME: ${DOMAIN_NAME}
                 PORT_NUM_FTP1: ${PORT_NUM_FTP1}
                 PORT_NUM_FTP2: ${PORT_NUM_FTP2}
+                PORT_NUM_FTP3: ${PORT_NUM_FTP3}
+                CERT_PATH: ${CERT_PATH}
+                CERT_KEY: ${CERT_KEY}
         environment:
             - FTP_USER=${FTP_USER}
             - FTP_PASS=${FTP_PASS}
@@ -134,7 +138,7 @@ services:
         ports:
             - "20:20"
             - "21:21"
-            - "47400-47470:47400-47470"
+            - "40000:40000"
 
     static:
         image: ${IMG_NAME_STATIC}
