@@ -22,10 +22,10 @@ RUN set -ex; \
 
 # install grafana from tar file
 RUN set -ex; \
-	wget https://dl.grafana.com/oss/release/grafana-7.4.5.linux-amd64.tar.gz; \
-	tar -zxvf grafana-7.4.5.linux-amd64.tar.gz; \
-	rm grafana-7.4.5.linux-amd64.tar.gz; \
-	mv grafana-7.4.5 grafana; \
+	wget https://dl.grafana.com/oss/release/grafana-8.0.6.linux-amd64.tar.gz; \
+    tar -zxvf grafana-8.0.6.linux-amd64.tar.gz; \
+	rm grafana-8.0.6.linux-amd64.tar.gz; \
+	mv grafana-8.0.6 grafana; \
 	mv grafana/ /usr/share/
 
 # copy .yml files

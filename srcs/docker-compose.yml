@@ -18,7 +18,7 @@ services:
             - docker-network
         volumes:
             - ${VOLUME_NAME_DB}:/var/lib/mysql
-        restart: always
+        restart: on-failure
 
     wordpress:
         image: ${IMG_NAME_WORDPRESS}
@@ -51,7 +51,7 @@ services:
         depends_on:
             - mariadb
             - redis
-        restart: always
+        restart: on-failure
         volumes:
             - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}
 
@@ -81,7 +81,7 @@ services:
             - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}
         depends_on:
             - wordpress
-        restart: always
+        restart: on-failure
 
     adminer:
         image: ${IMG_NAME_ADMINER}
@@ -90,7 +90,7 @@ services:
             context: ./requirements/bonus/adminer
             args:
                 PORT_NUM_ADMINER: ${PORT_NUM_ADMINER}
-        restart: always
+        restart: on-failure
         networks:
             - docker-network
         depends_on:
@@ -106,7 +106,7 @@ services:
                 CONT_NAME_REDIS: ${CONT_NAME_REDIS}
                 REDIS_SAVE_DURATION_IN_SEC: ${REDIS_SAVE_DURATION_IN_SEC}
                 REDIS_SAVE_MIN_REV: ${REDIS_SAVE_MIN_REV}
-        restart: always
+        restart: on-failure
         networks:
             - docker-network
         volumes:
@@ -129,7 +129,7 @@ services:
             - FTP_USER=${FTP_USER}
             - FTP_PASS=${FTP_PASS}
             - DOMAIN_NAME=${DOMAIN_NAME}
-        restart: always
+        restart: on-failure
         volumes:
             - ${VOLUME_NAME_WP}:/home/vsftpd
         depends_on:
@@ -148,7 +148,7 @@ services:
             context: ./requirements/bonus/static_web
             args:
                 PORT_NUM_STATIC: ${PORT_NUM_STATIC}
-        restart: always
+        restart: on-failure
         networks:
             - docker-network
         depends_on:
@@ -174,7 +174,7 @@ services:
             - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
             - GF_SERVER_SERVE_FROM_SUB_PATH=${GF_SERVER_SERVE_FROM_SUB_PATH}
             - GF_SERVER_ROOT_URL=https://${DOMAIN_NAME}/${CONT_NAME_GRAFANA}/
-        restart: always
+        restart: on-failure
         networks:
             - docker-network
         depends_on:

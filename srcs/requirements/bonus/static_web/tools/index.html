@@ -18,13 +18,17 @@
     </ul>
     <h2>FTP server</h2>
     <ul>
-        <li>Install lftp ("sudo apt-get update && sudo apt-get install lftp")</li>
-        <li>Connect to ftp server ("lftp -e 'set ssl:verify-certificate false' -u ftpuser -p 21 tnishina.42.fr")</li>
+        <li>Install lftp (sudo apt-get update && sudo apt-get install lftp)</li>
+        <li>Connect to ftp server (lftp -e 'set ssl:verify-certificate false' -u ftpuser -p 21 tnishina.42.fr)</li>
         <li>Type in ftp password ("Password: ftppass")</li>
-        <li>Create text.txt in local directory ("!echo "aaaaa" > test.txt")</li>
-        <li>Upload text.txt to ftp server ("put test.txt")</li>
-        <li>Remove text.txt from local directory ("!rm test.txt")</li>
-        <li>Download text.txt from ftp server ("get test.txt")</li>
+        <li>Create text.txt in local directory (!echo aaaaa > test.txt)</li>
+        <li>Check the local directory (!ls)</li>
+        <li>Upload text.txt to ftp server (put test.txt)</li>
+        <li>Check the ftp directory (ls)</li>
+        <li>Remove text.txt from local directory (!rm test.txt)</li>
+        <li>Check the local directory (!ls)</li>
+        <li>Download text.txt from ftp server (get test.txt)</li>
+        <li>Check the local directory (!ls)</li>
     </ul>
     <h2>Adminer</h2>
     <ul>

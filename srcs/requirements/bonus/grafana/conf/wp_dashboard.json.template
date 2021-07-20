@@ -16,6 +16,7 @@
   "editable": true,
   "gnetId": 13191,
   "graphTooltip": 0,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -104,7 +105,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -142,27 +143,26 @@
       "type": "table"
     },
     {
-      "aliasColors": {},
-      "breakPoint": "50%",
       "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": 0
-      },
       "datasource": "${GRAFANA_DATASOURCES_NAME}",
       "fieldConfig": {
         "defaults": {
-          "color": {},
-          "custom": {},
-          "thresholds": {
-            "mode": "absolute",
-            "steps": []
-          }
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "unit": "short"
         },
         "overrides": []
       },
-      "fontSize": "80%",
-      "format": "short",
       "gridPos": {
         "h": 9,
         "w": 6,
@@ -171,17 +171,30 @@
       },
       "id": 11,
       "interval": null,
-      "legend": {
-        "show": true,
-        "values": true
-      },
-      "legendType": "Under graph",
       "links": [],
-      "nullPointMode": "connected",
-      "pieType": "pie",
-      "pluginVersion": "7.4.5",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.6",
       "repeat": null,
-      "strokeWidth": 1,
       "targets": [
         {
           "format": "time_series",
@@ -210,14 +223,91 @@
       "timeShift": null,
       "title": "Top Browsers",
       "transparent": true,
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
+      "type": "piechart"
     },
     {
       "datasource": "${GRAFANA_DATASOURCES_NAME}",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Total Visits",
+          "mappings": [],
+          "max": 1000000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgb(43, 161, 86)",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 7,
+        "x": 12,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT sum(visit) as 'Total Visits' FROM wp_statistics_visit order by last_visit desc limit 15;\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "comment_ID"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "wp_comments",
+          "timeColumn": "comment_post_ID",
+          "timeColumnType": "bigint",
+          "where": [
+            {
+              "name": "$__unixEpochFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "type": "gauge"
+    },
+    {
+      "datasource": "${GRAFANA_DATASOURCES_NAME}",
+      "fieldConfig": {
+        "defaults": {
           "displayName": "Total Visitors",
           "mappings": [],
           "max": 1000000,
@@ -236,9 +326,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
-        "w": 7,
-        "x": 12,
+        "h": 5,
+        "w": 5,
+        "x": 19,
         "y": 0
       },
       "id": 7,
@@ -257,7 +347,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -296,86 +386,6 @@
       "datasource": "${GRAFANA_DATASOURCES_NAME}",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
-          "displayName": "Total Visits",
-          "mappings": [],
-          "max": 1000000,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "rgb(43, 161, 86)",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 19,
-        "y": 0
-      },
-      "id": 6,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "7.4.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT sum(visit) as 'Total Visits' FROM wp_statistics_visit order by last_visit desc limit 15;\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "comment_ID"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "wp_comments",
-          "timeColumn": "comment_post_ID",
-          "timeColumnType": "bigint",
-          "where": [
-            {
-              "name": "$__unixEpochFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "type": "stat"
-    },
-    {
-      "datasource": "${GRAFANA_DATASOURCES_NAME}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
           "displayName": "Total Online Users",
           "mappings": [],
           "max": 1000000,
@@ -394,10 +404,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 4,
         "w": 5,
         "x": 19,
-        "y": 4
+        "y": 5
       },
       "id": 17,
       "options": {
@@ -415,7 +425,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -548,7 +558,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -585,96 +595,158 @@
       "type": "table"
     },
     {
-      "aliasColors": {
-        "Visit": "rgb(28, 184, 235)",
-        "Visitor": "rgb(159, 21, 227)",
-        "Visitorrs": "rgb(65, 250, 42)",
-        "Visits": "rgb(28, 235, 255)",
-        "visit": "rgb(32, 99, 243)"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": "${GRAFANA_DATASOURCES_NAME}",
-      "decimals": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "hidden",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 6,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Visit"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "rgb(28, 184, 235)",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Visitor"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "rgb(159, 21, 227)",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Visitorrs"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "rgb(65, 250, 42)",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Visits"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "rgb(28, 235, 255)",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "visit"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "rgb(32, 99, 243)",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
-      "fill": 2,
-      "fillGradient": 0,
       "gridPos": {
         "h": 10,
         "w": 18,
         "x": 6,
-        "y": 10
+        "y": 9
       },
-      "hiddenSeries": false,
       "id": 2,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "total": true,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": false
-      },
-      "percentage": false,
-      "pluginVersion": "7.4.5",
-      "pointradius": 2,
-      "points": true,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "Visit",
-          "yaxis": 1
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  last_visit AS \"time\",\n  Visit\nFROM wp_statistics_visit\nWHERE\n  $__timeFilter(last_visit)\nORDER BY last_visit",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "visit"
-                ],
-                "type": "column"
-              }
-            ]
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max",
+            "min",
+            "sum"
           ],
-          "table": "wp_statistics_visit",
-          "timeColumn": "last_visit",
-          "timeColumnType": "datetime",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
+          "displayMode": "table",
+          "placement": "bottom"
         },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
         {
           "format": "time_series",
           "group": [],
@@ -704,62 +776,22 @@
           ]
         }
       ],
-      "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
-      "title": "Visit & Visitor in the last 10 days",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
+      "title": "Visitor in the last 10 days",
       "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": 10,
-        "max": 10,
-        "min": 1,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:252",
-          "format": "short",
-          "label": null,
-          "logBase": 2,
-          "max": null,
-          "min": null,
-          "show": false
-        },
-        {
-          "$$hashKey": "object:253",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "timeseries"
     }
   ],
   "refresh": "",
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-10d",
     "to": "now"
   },
   "timepicker": {
