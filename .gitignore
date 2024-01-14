@@ -1,2 +1,2 @@
 # when you use in production environment, make sure to de-comment out the following line so that the environment variables are not exposed to the public
-# *.env
+*.env
