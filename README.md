@@ -1,13 +1,14 @@
-# Overview
+## Overview
 
 A repository to launch a Wordpress website on Debian EC2 instance using docker-compose.
 
-# Requirement
+## Requirement
 
 - AWS account
+- EC2 instance (Debian 12 (HVM), SSD Volume Type, x86, t2.micro)
 - Your own domain
 
-# Setup
+## Setup
 
 Before running the make file, below are the required preparation on a vanilla Debian environment.
 
@@ -23,11 +24,28 @@ ssh -i /path/to/your-key.pem debian@your-ec2-instance-ip
 
 ### 2. Install Prerequisites:
 
-- Install packages to allow apt to use a repository over HTTPS:
+- Set up Docker's `apt` repository (Ref: https://docs.docker.com/engine/install/debian/).
 
 ```
+# Add Docker's official GPG key:
 sudo apt-get update
-sudo apt-get install apt-transport-https ca-certificates curl gnupg2 software-properties-common
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
 ```
 
-*(Under construction)*
+- Then, install the Docker packages (including the Compose plugin).
+
+```
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+### _(Under construction)_
