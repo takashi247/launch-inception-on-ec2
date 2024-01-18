@@ -50,10 +50,15 @@ RUN unitd \
     && curl \
     # send PUT request
         -X PUT \
-    # passing data from JSON file
+    # This sends data from the `/tmp/config.json` file as the request body
         -d @/tmp/config.json \
-    # specify unix socket and url path
-        --unix-socket /run/control.unit.sock http://localhost/config \
+    # specify unix socket to connect to, instead of TCP socket
+    # This is used for Inter-Process Communication (IPC)
+        --unix-socket /run/control.unit.sock \
+    # This is the URL to send the PUT request to
+    # Since a Unix socket is used, the host part of the URL is ignored
+    # (basically, this is just a placeholder)
+        http://localhost/config \
     # change permission for css file
     && chmod +r /var/www/html/adminer.css
 
