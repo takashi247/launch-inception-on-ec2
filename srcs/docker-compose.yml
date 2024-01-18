@@ -1,209 +1,165 @@
 # Define docker-compose version
-version: '3.5'
+version: "3.5"
 
 # Define services
 services:
-    mariadb:
-        image: ${IMG_NAME_MARIADB}
-        container_name: ${CONT_NAME_MARIADB}
-        build:
-            context: ./requirements/mariadb
-            args:
-                MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-                MYSQL_DATABASE: ${MYSQL_DATABASE}
-                MYSQL_USER: ${MYSQL_USER}
-                MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-                PORT_NUM_MARIADB: ${PORT_NUM_MARIADB}
-        networks:
-            - docker-network
-        volumes:
-            - ${VOLUME_NAME_DB}:/var/lib/mysql
-        restart: on-failure
+  mariadb:
+    image: ${IMG_NAME_MARIADB}
+    container_name: ${CONT_NAME_MARIADB}
+    build:
+      context: ./requirements/mariadb
+      args:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        PORT_NUM_MARIADB: ${PORT_NUM_MARIADB}
+    networks:
+      - docker-network
+    volumes:
+      - ${VOLUME_NAME_DB}:/var/lib/mysql
+    restart: on-failure
 
-    wordpress:
-        image: ${IMG_NAME_WORDPRESS}
-        container_name: ${CONT_NAME_WORDPRESS}
-        build:
-            context: ./requirements/wordpress
-            args:
-                CONT_NAME_WORDPRESS: ${CONT_NAME_WORDPRESS}
-                PORT_NUM_WORDPRESS: ${PORT_NUM_WORDPRESS}
-                PORT_NUM_REDIS: ${PORT_NUM_REDIS}
-        environment:
-            - MYSQL_DATABASE=${MYSQL_DATABASE}
-            - MYSQL_USER=${MYSQL_USER}
-            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-            - DOMAIN_NAME=${DOMAIN_NAME}
-            - TITLE=${TITLE}
-            - ADMIN_USER=${ADMIN_USER}
-            - ADMIN_PASSWORD=${ADMIN_PASSWORD}
-            - ADMIN_EMAIL=${ADMIN_EMAIL}
-            - USER_LOGIN=${USER_LOGIN}
-            - USER_EMAIL=${USER_EMAIL}
-            - ROLE=${ROLE}
-            - USER_PASSWORD=${USER_PASSWORD}
-            - CONT_NAME_MARIADB=${CONT_NAME_MARIADB}
-            - CONT_NAME_REDIS=${CONT_NAME_REDIS}
-            - PORT_NUM_REDIS=${PORT_NUM_REDIS}
-        networks:
-            - docker-network
-        depends_on:
-            - mariadb
-            - redis
-        restart: on-failure
-        volumes:
-            - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}
+  wordpress:
+    image: ${IMG_NAME_WORDPRESS}
+    container_name: ${CONT_NAME_WORDPRESS}
+    build:
+      context: ./requirements/wordpress
+      args:
+        CONT_NAME_WORDPRESS: ${CONT_NAME_WORDPRESS}
+        PORT_NUM_WORDPRESS: ${PORT_NUM_WORDPRESS}
+        PORT_NUM_REDIS: ${PORT_NUM_REDIS}
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - TITLE=${TITLE}
+      - ADMIN_USER=${ADMIN_USER}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - USER_LOGIN=${USER_LOGIN}
+      - USER_EMAIL=${USER_EMAIL}
+      - ROLE=${ROLE}
+      - USER_PASSWORD=${USER_PASSWORD}
+      - CONT_NAME_MARIADB=${CONT_NAME_MARIADB}
+      - CONT_NAME_REDIS=${CONT_NAME_REDIS}
+      - PORT_NUM_REDIS=${PORT_NUM_REDIS}
+    networks:
+      - docker-network
+    depends_on:
+      - mariadb
+      - redis
+    restart: on-failure
+    volumes:
+      - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}
 
-    nginx:
-        image: ${IMG_NAME_NGINX}
-        container_name: ${CONT_NAME_NGINX}
-        build:
-            context: ./requirements/nginx
-            args:
-                DOMAIN_NAME: ${DOMAIN_NAME}
-                CERT_PATH: ${CERT_PATH}
-                CERT_KEY: ${CERT_KEY}
-                PORT_NUM_NGINX: ${PORT_NUM_NGINX}
-                CONT_NAME_WORDPRESS: ${CONT_NAME_WORDPRESS}
-                CONT_NAME_ADMINER: ${CONT_NAME_ADMINER}
-                CONT_NAME_STATIC: ${CONT_NAME_STATIC}
-                CONT_NAME_GRAFANA: ${CONT_NAME_GRAFANA}
-                PORT_NUM_WORDPRESS: ${PORT_NUM_WORDPRESS}
-                PORT_NUM_ADMINER: ${PORT_NUM_ADMINER}
-                PORT_NUM_STATIC: ${PORT_NUM_STATIC}
-                PORT_NUM_GRAFANA: ${PORT_NUM_GRAFANA}
-        ports:
-            - "443:443"
-        networks:
-            - docker-network
-        volumes:
-            - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}
-        depends_on:
-            - wordpress
-        restart: on-failure
+  nginx:
+    image: ${IMG_NAME_NGINX}
+    container_name: ${CONT_NAME_NGINX}
+    build:
+      context: ./requirements/nginx
+      args:
+        DOMAIN_NAME: ${DOMAIN_NAME}
+        CERT_PATH: ${CERT_PATH}
+        CERT_KEY: ${CERT_KEY}
+        PORT_NUM_NGINX: ${PORT_NUM_NGINX}
+        CONT_NAME_WORDPRESS: ${CONT_NAME_WORDPRESS}
+        CONT_NAME_ADMINER: ${CONT_NAME_ADMINER}
+        CONT_NAME_GRAFANA: ${CONT_NAME_GRAFANA}
+        PORT_NUM_WORDPRESS: ${PORT_NUM_WORDPRESS}
+        PORT_NUM_ADMINER: ${PORT_NUM_ADMINER}
+        PORT_NUM_GRAFANA: ${PORT_NUM_GRAFANA}
+    ports:
+      - "443:443"
+    networks:
+      - docker-network
+    volumes:
+      - ${VOLUME_NAME_WP}:/var/www/${DOMAIN_NAME}
+    depends_on:
+      - wordpress
+    restart: on-failure
 
-    adminer:
-        image: ${IMG_NAME_ADMINER}
-        container_name: ${CONT_NAME_ADMINER}
-        build:
-            context: ./requirements/bonus/adminer
-            args:
-                PORT_NUM_ADMINER: ${PORT_NUM_ADMINER}
-        restart: on-failure
-        networks:
-            - docker-network
-        depends_on:
-            - mariadb
+  adminer:
+    image: ${IMG_NAME_ADMINER}
+    container_name: ${CONT_NAME_ADMINER}
+    build:
+      context: ./requirements/adminer
+      args:
+        PORT_NUM_ADMINER: ${PORT_NUM_ADMINER}
+    restart: on-failure
+    networks:
+      - docker-network
+    depends_on:
+      - mariadb
 
-    redis:
-        image: ${IMG_NAME_REDIS}
-        container_name: ${CONT_NAME_REDIS}
-        build:
-            context: ./requirements/bonus/redis
-            args:
-                PORT_NUM_REDIS: ${PORT_NUM_REDIS}
-                CONT_NAME_REDIS: ${CONT_NAME_REDIS}
-                REDIS_SAVE_DURATION_IN_SEC: ${REDIS_SAVE_DURATION_IN_SEC}
-                REDIS_SAVE_MIN_REV: ${REDIS_SAVE_MIN_REV}
-        restart: on-failure
-        networks:
-            - docker-network
-        volumes:
-            - ${VOLUME_NAME_REDIS_BACKUP}:/var/lib/redis
+  redis:
+    image: ${IMG_NAME_REDIS}
+    container_name: ${CONT_NAME_REDIS}
+    build:
+      context: ./requirements/redis
+      args:
+        PORT_NUM_REDIS: ${PORT_NUM_REDIS}
+        CONT_NAME_REDIS: ${CONT_NAME_REDIS}
+        REDIS_SAVE_DURATION_IN_SEC: ${REDIS_SAVE_DURATION_IN_SEC}
+        REDIS_SAVE_MIN_REV: ${REDIS_SAVE_MIN_REV}
+    restart: on-failure
+    networks:
+      - docker-network
+    volumes:
+      - ${VOLUME_NAME_REDIS_BACKUP}:/var/lib/redis
 
-    ftp:
-        image: ${IMG_NAME_FTP}
-        container_name: ${CONT_NAME_FTP}
-        build:
-            context: ./requirements/bonus/ftp
-            args:
-                DOMAIN_NAME: ${DOMAIN_NAME}
-                PORT_NUM_FTP1: ${PORT_NUM_FTP1}
-                PORT_NUM_FTP2: ${PORT_NUM_FTP2}
-                PORT_NUM_FTP3: ${PORT_NUM_FTP3}
-                CERT_PATH: ${CERT_PATH}
-                CERT_KEY: ${CERT_KEY}
-                TINI_VERSION: ${TINI_VERSION}
-        environment:
-            - FTP_USER=${FTP_USER}
-            - FTP_PASS=${FTP_PASS}
-            - DOMAIN_NAME=${DOMAIN_NAME}
-        restart: on-failure
-        volumes:
-            - ${VOLUME_NAME_WP}:/home/vsftpd
-        depends_on:
-            - wordpress
-        networks:
-            - docker-network
-        ports:
-            - "20:20"
-            - "21:21"
-            - "40000:40000"
-
-    static_web:
-        image: ${IMG_NAME_STATIC}
-        container_name: ${CONT_NAME_STATIC}
-        build:
-            context: ./requirements/bonus/static_web
-            args:
-                PORT_NUM_STATIC: ${PORT_NUM_STATIC}
-        restart: on-failure
-        networks:
-            - docker-network
-        depends_on:
-            - nginx
-
-    grafana:
-        image: ${IMG_NAME_GRAFANA}
-        container_name: ${CONT_NAME_GRAFANA}
-        build:
-            context: ./requirements/bonus/grafana
-            args:
-                PORT_NUM_GRAFANA: ${PORT_NUM_GRAFANA}
-                CONT_NAME_MARIADB: ${CONT_NAME_MARIADB}
-                PORT_NUM_MARIADB: ${PORT_NUM_MARIADB}
-                MYSQL_USER: ${MYSQL_USER}
-                MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-                MYSQL_DATABASE: ${MYSQL_DATABASE}
-                GRAFANA_DATASOURCES_NAME: ${GRAFANA_DATASOURCES_NAME}
-                GRAFANA_DASHBOARD_NAME: ${GRAFANA_DASHBOARD_NAME}
-                TINI_VERSION: ${TINI_VERSION}
-        environment:
-            - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}
-            - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
-            - GF_SERVER_SERVE_FROM_SUB_PATH=${GF_SERVER_SERVE_FROM_SUB_PATH}
-            - GF_SERVER_ROOT_URL=https://${DOMAIN_NAME}/${CONT_NAME_GRAFANA}/
-        restart: on-failure
-        networks:
-            - docker-network
-        depends_on:
-            - wordpress
-            - mariadb
+  grafana:
+    image: ${IMG_NAME_GRAFANA}
+    container_name: ${CONT_NAME_GRAFANA}
+    build:
+      context: ./requirements/grafana
+      args:
+        PORT_NUM_GRAFANA: ${PORT_NUM_GRAFANA}
+        CONT_NAME_MARIADB: ${CONT_NAME_MARIADB}
+        PORT_NUM_MARIADB: ${PORT_NUM_MARIADB}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        GRAFANA_DATASOURCES_NAME: ${GRAFANA_DATASOURCES_NAME}
+        GRAFANA_DASHBOARD_NAME: ${GRAFANA_DASHBOARD_NAME}
+        TINI_VERSION: ${TINI_VERSION}
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+      - GF_SERVER_SERVE_FROM_SUB_PATH=${GF_SERVER_SERVE_FROM_SUB_PATH}
+      - GF_SERVER_ROOT_URL=https://${DOMAIN_NAME}/${CONT_NAME_GRAFANA}/
+    restart: on-failure
+    networks:
+      - docker-network
+    depends_on:
+      - wordpress
+      - mariadb
 
 # Define network
 networks:
-    docker-network:
-        driver: bridge
+  docker-network:
+    driver: bridge
 
 # Define volumes
 volumes:
-    wordpress_files:
-        name: ${VOLUME_NAME_WP}
-        driver_opts:
-            type: none
-            device: ${HOST_PATH_WP}
-            o: bind
-    db:
-        name: ${VOLUME_NAME_DB}
-        driver_opts:
-            type: none
-            device: ${HOST_PATH_DB}
-            o: bind
+  wordpress_files:
+    name: ${VOLUME_NAME_WP}
+    driver_opts:
+      type: none
+      device: ${HOST_PATH_WP}
+      o: bind
+  db:
+    name: ${VOLUME_NAME_DB}
+    driver_opts:
+      type: none
+      device: ${HOST_PATH_DB}
+      o: bind
 
-    redis_backup:
-        name: ${VOLUME_NAME_REDIS_BACKUP}
-        driver_opts:
-            type: none
-            device: ${HOST_PATH_REDIS_BACKUP}
-            o: bind
+  redis_backup:
+    name: ${VOLUME_NAME_REDIS_BACKUP}
+    driver_opts:
+      type: none
+      device: ${HOST_PATH_REDIS_BACKUP}
+      o: bind
