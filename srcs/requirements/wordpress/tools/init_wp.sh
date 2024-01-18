@@ -34,10 +34,10 @@ if [ ! "$(ls -A /var/www/${DOMAIN_NAME})" ]; then
     # create users as www-data using gosu
     gosu www-data \
         /usr/local/bin/wp user create \
-        ${USER_LOGIN} \
-        ${USER_EMAIL} \
-        --role=${ROLE} \
-        --user_pass=${USER_PASSWORD}
+        ${EDITOR_LOGIN} \
+        ${EDITOR_EMAIL} \
+        --role=editor \
+        --user_pass=${EDITOR_PASSWORD}
 
     # install redis cache plugin
     gosu www-data \
