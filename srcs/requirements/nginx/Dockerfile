@@ -51,6 +51,10 @@ RUN ln -s /etc/nginx/sites-available/mysite.conf /etc/nginx/sites-enabled/mysite
 # set daemon off to run nginx in foreground
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
+# Copy shell script for certbot installation
+COPY tools/init.sh /usr/local/bin/
+RUN chmod 777 /usr/local/bin/init.sh
+
 # set necessary ports exposed
 EXPOSE ${PORT_NUM_NGINX_HTTP} ${PORT_NUM_NGINX_HTTPS}
 
