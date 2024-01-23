@@ -1,5 +1,5 @@
 # get base image
-FROM debian:buster
+FROM debian:bookworm-slim
 
 # set necessary env variables
 ARG PORT_NUM_ADMINER
@@ -12,7 +12,9 @@ RUN set -ex; \
     gnupg;
 
 # download Nginx's signing key and add it to apt's keyring to eliminate warnings during Unit installation
-RUN curl -sL https://nginx.org/keys/nginx_signing.key | apt-key add -
+RUN set -ex; \
+    curl --output /usr/share/keyrings/nginx-keyring.gpg  \
+      https://unit.nginx.org/keys/nginx-keyring.gpg;
 
 # configure Unit's repository
 COPY ./conf/unit.list /etc/apt/sources.list.d/

@@ -1,5 +1,5 @@
 # Get base image
-FROM debian:buster
+FROM debian:bookworm-slim
 
 # Set necessary environment variables
 ARG DOMAIN_NAME

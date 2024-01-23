@@ -1,5 +1,5 @@
 # get base image
-FROM debian:buster
+FROM debian:bookworm-slim
 
 # set necessary env variables
 ARG PORT_NUM_GRAFANA

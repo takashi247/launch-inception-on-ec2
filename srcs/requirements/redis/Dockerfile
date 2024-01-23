@@ -1,5 +1,5 @@
 # get base image
-FROM debian:buster
+FROM debian:bookworm-slim
 
 ARG CONT_NAME_REDIS
 ARG PORT_NUM_REDIS

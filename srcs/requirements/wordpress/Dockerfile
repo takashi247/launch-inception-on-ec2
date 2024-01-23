@@ -1,5 +1,5 @@
 # Get base image
-FROM debian:buster
+FROM debian:bookworm-slim
 
 # Set necessary env variables
 ARG CONT_NAME_WORDPRESS
@@ -31,7 +31,7 @@ RUN set -ex; \
 	# a XML utility for php-pear
 		php-xml-util \
 	# to use gettext functions
-		php-gettext \
+		php-php-gettext \
 	# to use MySQL module for php
 		php-mysql \
 	# to handle numbers
@@ -50,7 +50,7 @@ COPY conf/www.conf.template /tmp
 
 # Convert environment variables in template file
 RUN envsubst '$$CONT_NAME_WORDPRESS$$PORT_NUM_WORDPRESS' \
-	< /tmp/www.conf.template > /etc/php/7.3/fpm/pool.d/www.conf; \
+	< /tmp/www.conf.template > /etc/php/8.2/fpm/pool.d/www.conf; \
 	rm /tmp/www.conf.template;
 
 # Copy wp-config file
@@ -64,8 +64,8 @@ RUN chmod 777 /usr/local/bin/init_wp.sh
 EXPOSE ${PORT_NUM_WORDPRESS}
 EXPOSE ${PORT_NUM_REDIS}
 
-# make necessary directory for executing php-fpm7.3
+# make necessary directory for executing php-fpm8.2
 RUN mkdir -p /run/php
 
 # execute php-fpm in foreground
-ENTRYPOINT ["php-fpm7.3", "-F"]
+ENTRYPOINT ["php-fpm8.2", "-F"]

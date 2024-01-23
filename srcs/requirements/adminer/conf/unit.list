@@ -1,2 +1,2 @@
-deb https://packages.nginx.org/unit/debian/ buster unit
-deb-src https://packages.nginx.org/unit/debian/ buster unit
+deb [signed-by=/usr/share/keyrings/nginx-keyring.gpg] https://packages.nginx.org/unit/debian/ bookworm unit
+deb-src [signed-by=/usr/share/keyrings/nginx-keyring.gpg] https://packages.nginx.org/unit/debian/ bookworm unit
