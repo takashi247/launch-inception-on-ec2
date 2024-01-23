@@ -203,7 +203,7 @@ Below is the list of environment variables you need to specify in the `.env` fil
 cd srcs
 docker compose exec CONT_NAME_NGINX bash
 apt-get update
-apt-get install -y certbot python-certbot-nginx
+apt-get install -y certbot python3-certbot-nginx
 certbot --nginx
 ```
 
