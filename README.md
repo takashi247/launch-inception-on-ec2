@@ -128,14 +128,15 @@ Below is the list of environment variables you need to specify in the `.env` fil
 
 ### Port numbers
 
-| Variable           | Description                        |
-| ------------------ | ---------------------------------- |
-| PORT_NUM_NGINX     | Port number assigned to Nginx.     |
-| PORT_NUM_WORDPRESS | Port number assigned to WordPress. |
-| PORT_NUM_MARIADB   | Port number assigned to MariaDB.   |
-| PORT_NUM_ADMINER   | Port number assigned to Adminer.   |
-| PORT_NUM_REDIS     | Port number assigned to Redis.     |
-| PORT_NUM_GRAFANA   | Port number assigned to Grafana.   |
+| Variable             | Description                              |
+| -------------------- | ---------------------------------------- |
+| PORT_NUM_NGINX_HTTP  | Port number assigned to Nginx for http.  |
+| PORT_NUM_NGINX_HTTPS | Port number assigned to Nginx for https. |
+| PORT_NUM_WORDPRESS   | Port number assigned to WordPress.       |
+| PORT_NUM_MARIADB     | Port number assigned to MariaDB.         |
+| PORT_NUM_ADMINER     | Port number assigned to Adminer.         |
+| PORT_NUM_REDIS       | Port number assigned to Redis.           |
+| PORT_NUM_GRAFANA     | Port number assigned to Grafana.         |
 
 ### Directory paths in host machine
 
@@ -190,3 +191,20 @@ Below is the list of environment variables you need to specify in the `.env` fil
   - Username: value of `GF_SECURITY_ADMIN_USER`
   - Password: value of `GF_SECURITY_ADMIN_PASSWORD`
 - Click `Search` on the left panel and then go to `Wordpress statistics dashboard`.
+
+## How to certify your website using Certbot
+
+- When you first launch the website via make command, the website is being self-certified
+- Below is the command to make your website certified by using Certbot
+
+**(Please replace CONT_NAME_NGINX in the code below with the name of NGINX container you specify in .env file)**
+
+```
+cd srcs
+docker compose exec CONT_NAME_NGINX bash
+apt-get update
+apt-get install -y certbot python-certbot-nginx
+certbot --nginx
+```
+
+- Follow the prompt instruction to complete the task

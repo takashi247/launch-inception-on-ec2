@@ -63,7 +63,8 @@ services:
         DOMAIN_NAME: ${DOMAIN_NAME}
         CERT_PATH: ${CERT_PATH}
         CERT_KEY: ${CERT_KEY}
-        PORT_NUM_NGINX: ${PORT_NUM_NGINX}
+        PORT_NUM_NGINX_HTTP: ${PORT_NUM_NGINX_HTTP}
+        PORT_NUM_NGINX_HTTPS: ${PORT_NUM_NGINX_HTTPS}
         CONT_NAME_WORDPRESS: ${CONT_NAME_WORDPRESS}
         CONT_NAME_ADMINER: ${CONT_NAME_ADMINER}
         CONT_NAME_GRAFANA: ${CONT_NAME_GRAFANA}
@@ -71,6 +72,7 @@ services:
         PORT_NUM_ADMINER: ${PORT_NUM_ADMINER}
         PORT_NUM_GRAFANA: ${PORT_NUM_GRAFANA}
     ports:
+      - "80:80"
       - "443:443"
     networks:
       - docker-network

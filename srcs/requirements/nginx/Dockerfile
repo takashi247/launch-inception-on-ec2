@@ -5,7 +5,8 @@ FROM debian:buster
 ARG DOMAIN_NAME
 ARG CERT_PATH
 ARG CERT_KEY
-ARG PORT_NUM_NGINX
+ARG PORT_NUM_NGINX_HTTP
+ARG PORT_NUM_NGINX_HTTPS
 ARG CONT_NAME_WORDPRESS
 ARG CONT_NAME_ADMINER
 ARG CONT_NAME_GRAFANA
@@ -51,7 +52,7 @@ RUN ln -s /etc/nginx/sites-available/mysite.conf /etc/nginx/sites-enabled/mysite
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 # set necessary ports exposed
-EXPOSE ${PORT_NUM_NGINX}
+EXPOSE ${PORT_NUM_NGINX_HTTP} ${PORT_NUM_NGINX_HTTPS}
 
 # Change owner of all files in the www directory
 RUN chown -R www-data:www-data /var/www
