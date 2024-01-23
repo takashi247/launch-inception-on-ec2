@@ -1,5 +1,5 @@
 # Get base image
-FROM debian:buster
+FROM debian:bookworm-slim
 
 # Set necessary env variables
 ARG CONT_NAME_WORDPRESS
@@ -31,7 +31,7 @@ RUN set -ex; \
 	# a XML utility for php-pear
 		php-xml-util \
 	# to use gettext functions
-		php-gettext \
+		php-php-gettext \
 	# to use MySQL module for php
 		php-mysql \
 	# to handle numbers
@@ -68,4 +68,4 @@ EXPOSE ${PORT_NUM_REDIS}
 RUN mkdir -p /run/php
 
 # execute php-fpm in foreground
-ENTRYPOINT ["php-fpm7.3", "-F"]
+ENTRYPOINT ["php-fpm8.2", "-F"]

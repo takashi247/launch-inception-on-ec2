@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bookworm-slim
 
 # Set necessary env variables
 ARG MYSQL_ROOT_PASSWORD
