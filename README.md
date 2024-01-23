@@ -69,11 +69,12 @@ Below is the list of environment variables you need to specify in the `.env` fil
 
 ### Nginx parameters
 
-| Variable    | Description                                        |
-| ----------- | -------------------------------------------------- |
-| DOMAIN_NAME | Your domain to access to your website.             |
-| CERT_PATH   | A path to the SSL certificate (i.e., `.crt` file). |
-| CERT_KEY    | A path to the SSL key (`.key` file).               |
+| Variable      | Description                                                              |
+| ------------- | ------------------------------------------------------------------------ |
+| DOMAIN_NAME   | Your domain to access to your website.                                   |
+| CERT_PATH     | A path to the SSL certificate (i.e., `.crt` file).                       |
+| CERT_KEY      | A path to the SSL key (`.key` file).                                     |
+| CERTBOT_EMAIL | E-mail address to be registered when installing certificate via Certbot. |
 
 ### MySQL parameters
 
@@ -191,20 +192,3 @@ Below is the list of environment variables you need to specify in the `.env` fil
   - Username: value of `GF_SECURITY_ADMIN_USER`
   - Password: value of `GF_SECURITY_ADMIN_PASSWORD`
 - Click `Search` on the left panel and then go to `Wordpress statistics dashboard`.
-
-## How to certify your website using Certbot
-
-- When you first launch the website via make command, the website is being self-certified
-- Below is the command to make your website certified by using Certbot
-
-**(Please replace CONT_NAME_NGINX in the code below with the name of NGINX container you specify in .env file)**
-
-```
-cd srcs
-docker compose exec CONT_NAME_NGINX bash
-apt-get update
-apt-get install -y certbot python3-certbot-nginx
-certbot --nginx
-```
-
-- Follow the prompt instruction to complete the task

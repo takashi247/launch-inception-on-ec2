@@ -71,6 +71,9 @@ services:
         PORT_NUM_WORDPRESS: ${PORT_NUM_WORDPRESS}
         PORT_NUM_ADMINER: ${PORT_NUM_ADMINER}
         PORT_NUM_GRAFANA: ${PORT_NUM_GRAFANA}
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - CERTBOT_EMAIL=${CERTBOT_EMAIL}
     ports:
       - "80:80"
       - "443:443"
