@@ -10,6 +10,7 @@ ARG REDIS_SAVE_MIN_REV
 RUN set -ex; \
 	apt-get update; \
 	apt-get -y install \
+        curl \
 	# to install redis-server
         redis-server \
     # to use envsubst

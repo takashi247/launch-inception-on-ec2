@@ -18,6 +18,7 @@ ARG PORT_NUM_GRAFANA
 RUN set -ex; \
 	apt-get update; \
 	apt-get -y install \
+		curl \
 	# to create SSL certificate
 		openssl \
 	# to use envsubst

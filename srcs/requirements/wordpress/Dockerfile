@@ -41,7 +41,9 @@ RUN set -ex; \
 	# to use envsubst
 		gettext-base \
 	# to use mysqladmin command in init_wp.sh
-		mariadb-client; \
+		mariadb-client \
+	# to use redis-cli command in init_wp.sh
+		curl; \
 	# Remove apt-get caches
 	rm -rf /var/lib/apt/lists;
 

@@ -16,7 +16,7 @@ ARG TINI_VERSION
 RUN set -ex; \
     apt-get update; \
     apt-get -y install \
-        wget \
+        wget curl \
     # to use envsubst
         gettext-base;
 

@@ -11,6 +11,7 @@ ARG PORT_NUM_MARIADB
 RUN set -ex; \
 	apt-get update \
     && apt-get install -y --no-install-recommends \
+		curl \
 	# to use server-side applications of mariadb
 		mariadb-server \
 	# to use envsubst
