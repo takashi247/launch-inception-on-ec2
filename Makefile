@@ -9,6 +9,9 @@ all:
 		docker compose exec wordpress init_wp.sh && \
 		docker compose exec nginx init.sh
 
+restart:
+	cd srcs && docker compose restart
+
 clean:
 	cd srcs && docker compose down -v;
 	set -a; \
